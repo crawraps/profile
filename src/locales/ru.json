@@ -1,1 +1,8 @@
-{}
+{
+  "home-link": "Главная",
+  "about-link": "Обо мне",
+  "theme-button": "Темная тема",
+  "lang-button": "Русский язык",
+  "nav-title-settings": "Настройки",
+  "nav-title-navigation": "Навигация"
+}

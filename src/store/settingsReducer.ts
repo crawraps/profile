@@ -13,8 +13,10 @@ const defaultState = {
 export const settingsReducer = (state = defaultState, action: AnyAction) => {
   switch (action.type) {
     case 'lang':
+      localStorage.setItem('lang', action.value)
       return { ...state, lang: action.value }
     case 'theme':
+      localStorage.setItem('theme', action.value)
       return { ...state, theme: action.value }
     default:
       return state

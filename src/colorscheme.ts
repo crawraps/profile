@@ -1,3 +1,9 @@
+import { DefaultTheme } from 'styled-components'
+
+declare module 'styled-components' {
+  export interface DefaultTheme extends Colorscheme {}
+}
+
 export type Colorscheme = {
   main: string
   primary: string
@@ -10,10 +16,10 @@ export type Colorscheme = {
 
 const darkTheme: Colorscheme = {
   main: '#000000',
-  primary: '#aeb6bf',
-  secondary: '#e5e7e9',
+  primary: '#00695c',
+  secondary: '#353a3f',
   background: '#1a1a1a',
-  opacityBackground: 'rgba(0, 0, 0, .6)',
+  opacityBackground: '#131b28',
   text: '#ffffff',
   opacityText: 'rbga(255, 255, 255, .6)',
 }
@@ -21,7 +27,7 @@ const darkTheme: Colorscheme = {
 const lightTheme: Colorscheme = {
   main: '#ffffff',
   primary: '#ffab90',
-  secondary: '#ffe390',
+  secondary: '#ffd7d2',
   background: '#efefef',
   opacityBackground: 'rgba(255, 255, 255, .6)',
   text: '#000000',
