@@ -16,11 +16,12 @@ export default function Layout(): JSX.Element {
   const toggleNavOpen = () => setIsNavOpen(!isNavOpen)
 
   const toggleLang = () => {
-    const newLang = state.lang === 'ru' ? 'en' : 'ru'
+    const newLang = state.settingsReducer.lang === 'ru' ? 'en' : 'ru'
     dispatch({ type: 'lang', value: newLang })
     i18n.changeLanguage(newLang)
   }
-  const toggleTheme = () => dispatch({ type: 'theme', value: state.theme === 'dark' ? 'light' : 'dark' })
+  const toggleTheme = () =>
+    dispatch({ type: 'theme', value: state.settingsReducer.theme === 'dark' ? 'light' : 'dark' })
 
   return (
     <>
@@ -35,10 +36,10 @@ export default function Layout(): JSX.Element {
           <Link to='about'>{t('about-link')}</Link>
         </NavbarBlock>
         <NavbarBlock title={t('nav-title-settings')} as='toggles'>
-          <button onClick={toggleTheme} name={state.theme === 'dark' ? 'enable' : 'disable'}>
+          <button onClick={toggleTheme} name={state.settingsReducer.theme === 'dark' ? 'enable' : 'disable'}>
             {t('theme-button')}
           </button>
-          <button onClick={toggleLang} name={state.lang === 'ru' ? 'enable' : 'disable'}>
+          <button onClick={toggleLang} name={state.settingsReducer.lang === 'ru' ? 'enable' : 'disable'}>
             {t('lang-button')}
           </button>
         </NavbarBlock>

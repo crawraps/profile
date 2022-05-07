@@ -11,7 +11,7 @@ import Home from './pages/Home'
 import Project from './pages/Project'
 
 function App(): JSX.Element {
-  const themeName = useAppSelector(state => state.theme)
+  const themeName: 'dark' | 'light' = useAppSelector(state => state.settingsReducer.theme)
 
   return (
     <HelmetProvider>

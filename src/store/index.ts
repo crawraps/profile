@@ -1,9 +1,10 @@
+import { projectsReducer } from './projectsReducer'
 import { settingsReducer } from './settingsReducer'
 import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 export const store = configureStore({
-  reducer: settingsReducer,
+  reducer: { settingsReducer, projectsReducer },
 })
 
 // Define store types
