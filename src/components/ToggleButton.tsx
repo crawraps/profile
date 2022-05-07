@@ -7,7 +7,7 @@ export default function ToggleButton(props: any): JSX.Element {
 
   const containerVariants: Variants = {
     disable: {
-      backgroundColor: theme.main,
+      backgroundColor: theme.opacityBackground,
     },
     enable: {
       backgroundColor: theme.primary,
@@ -45,6 +45,7 @@ const Container = styled(motion.div)`
   align-items: center;
   padding: 2px;
   position: relative;
+  background-color: ${props => props.theme.opacityBackground};
 `
 const Dot = styled(motion.div)`
   height: 100%;

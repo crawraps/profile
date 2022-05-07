@@ -5,6 +5,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 export const store = configureStore({
   reducer: { settingsReducer, projectsReducer },
+  middleware: getDeaultMiddleware => getDeaultMiddleware({ serializableCheck: false }),
 })
 
 // Define store types

@@ -40,4 +40,6 @@ const Container = styled(motion.div)`
   background-color: ${props => props.theme.background};
   padding: 10px;
   transition: background-color 0.2s ease-in;
+  box-shadow: ${props => props.theme.elevation[0].shadow};
+  background-color: ${props => props.theme.elevation[0].color};
 `

@@ -1,11 +1,13 @@
-import { getFirestore, doc, getDoc, getDocs, collection, QuerySnapshot, DocumentData } from 'firebase/firestore'
+import { getFirestore, getDocs, collection } from 'firebase/firestore'
 import app from '.'
 
 const db = getFirestore(app)
 export type Project = {
   id: string
-  name: string
-  description: string
+  nameEN: string
+  nameRU: string
+  descriptionEN: string
+  descriptionRU: string
   mainImage: string
   images: string[]
   links: string[]
