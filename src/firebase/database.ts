@@ -22,6 +22,11 @@ export type Tag = {
   color: string
 }
 
+export interface AboutText {
+  textRU: string
+  textEN: string
+}
+
 export async function getProjects(): Promise<Project[]> {
   const projects: Project[] = []
   await getDocs(collection(db, 'projects'))
@@ -51,6 +56,11 @@ export async function getTags(): Promise<Tag[]> {
   return tags
 }
 
-// async function getProject(id: string {
+export async function getAboutText(): Promise<AboutText> {
+  let text: AboutText = { textEN: '', textRU: '' }
+  await getDocs(collection(db, 'about'))
+    .then(res => res.forEach(doc => (text = doc.data() as AboutText)))
+    .catch(err => console.log(`An error occurred while getting about text. ${err}`))
 
-// }
+  return text
+}

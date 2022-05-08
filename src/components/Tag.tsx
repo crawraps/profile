@@ -34,7 +34,7 @@ export default function TagElement({ tagName }: Props): JSX.Element {
   target = target === '/?tags=' ? '/' : target
 
   return (
-    <StyledLink to={target} color={tag?.color ?? 'black'} initialtags={initialTags} name={tagName}>
+    <StyledLink to={target} color={tag?.color} initialtags={initialTags} name={tagName}>
       {tagName}
     </StyledLink>
   )
@@ -42,7 +42,7 @@ export default function TagElement({ tagName }: Props): JSX.Element {
 
 const StyledLink = styled(Link)<StyledLinkProps>`
   color: ${props => props.theme.main};
-  background-color: ${props => props.color};
+  background-color: ${props => props?.color ?? props.theme.background};
   z-index: 1;
   display: inline;
   padding: 2px 10px;
@@ -52,7 +52,7 @@ const StyledLink = styled(Link)<StyledLinkProps>`
   line-height: 14px;
   text-decoration: none;
   border-radius: 100px;
-  transition: 0.2s ease-in;
+  transition: color 0.2s ease-in;
   opacity: ${({ initialtags, name }) => (initialtags.includes(name) || initialtags.length === 0 ? 1 : 0.5)};
 
   &:hover {
@@ -60,7 +60,7 @@ const StyledLink = styled(Link)<StyledLinkProps>`
   }
 `
 interface StyledLinkProps {
-  color: string
+  color?: string
   initialtags: string[]
   name: string
 }

@@ -1,10 +1,11 @@
+import { aboutReducer } from './aboutReducer'
 import { projectsReducer } from './projectsReducer'
 import { settingsReducer } from './settingsReducer'
 import { configureStore } from '@reduxjs/toolkit'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 export const store = configureStore({
-  reducer: { settingsReducer, projectsReducer },
+  reducer: { settingsReducer, projectsReducer, aboutReducer },
   middleware: getDeaultMiddleware => getDeaultMiddleware({ serializableCheck: false }),
 })
 

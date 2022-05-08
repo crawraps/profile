@@ -16,7 +16,6 @@ export default function Layout(): JSX.Element {
   const { i18n, t } = useTranslation()
   const [pageInfo, setPageInfo] = React.useState<PageInfo | null>(null)
   const [isNavOpen, setIsNavOpen] = React.useState<boolean>(false)
-  console.log(window.innerWidth)
   const toggleNavOpen = () => setIsNavOpen(!isNavOpen)
 
   // Set body background
