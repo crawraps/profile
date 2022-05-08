@@ -45,12 +45,12 @@ const Container = styled(motion.div)`
   align-items: center;
   padding: 2px;
   position: relative;
-  background-color: ${props => props.theme.opacityBackground};
 `
 const Dot = styled(motion.div)`
   height: 100%;
   aspect-ratio: 1;
   border-radius: 50%;
   background-color: ${props => props.theme.background};
+  background-color: ${props => props.theme.elevation[0].color};
   transition: background-color 0.2s ease-in;
 `

@@ -52,8 +52,8 @@ const lightTheme: Colorscheme = {
   main: '#ffffff',
   primary: '#ffab90',
   secondary: '#ffd7d2',
-  background: 'rgba(255, 255, 255, .6)',
-  opacityBackground: '#efefef',
+  background: '#f1f1f1',
+  opacityBackground: '#e3e3e3',
   text: '#000000',
   opacityText: 'rgba(0, 0, 0, .8)',
   elevation: [

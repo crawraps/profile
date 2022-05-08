@@ -5,5 +5,7 @@
   "lang-button": "Russian language",
   "nav-title-settings": "Settings",
   "nav-title-navigation": "Navigation",
-  "list-title": "Projects"
+  "list-title": "Projects",
+  "tags-title": "Find by tag",
+  "tags-button": "Сlear filter"
 }

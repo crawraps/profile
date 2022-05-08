@@ -23,13 +23,13 @@ export type Tag = {
 export async function getProjects(): Promise<Project[]> {
   const projects: Project[] = []
   await getDocs(collection(db, 'projects'))
-    .then(res =>
+    .then(res => {
       res.forEach(doc => {
         const pr = { ...doc.data() } as Project
         pr.id = doc.id
         projects.push(pr)
       })
-    )
+    })
     .catch(err => console.log(`An error occurred while getting projects. ${err}`))
 
   return projects

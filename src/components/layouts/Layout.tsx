@@ -1,20 +1,30 @@
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
-import { Link, Outlet, useOutletContext } from 'react-router-dom'
+import { Link, Outlet, useLocation, useOutletContext } from 'react-router-dom'
+import styled, { useTheme } from 'styled-components'
 import { useAppDispatch, useAppSelector } from '../../store'
 import MenuButton from '../MenuButton'
 import Navbar from '../Navbar'
 import NavbarBlock from '../NavbarBlock'
+import TagElement from '../Tag'
+import TagsContainer from '../TagsContainer'
 
 export default function Layout(): JSX.Element {
   const dispatch = useAppDispatch()
   const state = useAppSelector(state => state)
   const { i18n, t } = useTranslation()
   const [pageInfo, setPageInfo] = React.useState<PageInfo | null>(null)
-  const [isNavOpen, setIsNavOpen] = React.useState<boolean>(true)
+  const [isNavOpen, setIsNavOpen] = React.useState<boolean>(false)
   const toggleNavOpen = () => setIsNavOpen(!isNavOpen)
 
+  // Set body background
+  const theme = useTheme()
+  React.useState(() => {
+    document.body.style.backgroundColor = theme.background
+  })
+
+  // Function to toggle language and theme
   const toggleLang = () => {
     const newLang = state.settingsReducer.lang === 'ru' ? 'en' : 'ru'
     dispatch({ type: 'lang', value: newLang })
@@ -23,8 +33,16 @@ export default function Layout(): JSX.Element {
   const toggleTheme = () =>
     dispatch({ type: 'theme', value: state.settingsReducer.theme === 'dark' ? 'light' : 'dark' })
 
+  // Get tags
+  const [tagItems, setTagItems] = React.useState<JSX.Element[] | null>(null)
+  React.useEffect(() => {
+    state.projectsReducer.tags
+      .then(tags => setTagItems(tags.map(tag => <TagElement tag={tag} key={tag.name} />)))
+      .then(_ => setIsNavOpen(true)) // Show layout when tags loaded
+  }, [state.projectsReducer.tags])
+
   return (
-    <>
+    <Container>
       <Helmet>
         <title>{`Crawraps | ${pageInfo?.name}`}</title>
       </Helmet>
@@ -45,10 +63,22 @@ export default function Layout(): JSX.Element {
         </NavbarBlock>
       </Navbar>
 
+      <TagsContainer isOpen={isNavOpen}>{tagItems}</TagsContainer>
+
       <Outlet context={setPageInfo} />
-    </>
+    </Container>
   )
 }
+
+const Container = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: ${props => props.theme.background};
+  overflow: hidden;
+  min-height: 100vh;
+  min-width: 100%;
+`
 
 // Create custom hook to access page information
 
@@ -58,4 +88,10 @@ type PageInfo = {
 
 export function usePageInfo() {
   return useOutletContext<React.Dispatch<React.SetStateAction<PageInfo | null>>>()
+}
+
+// Custom hook to parse query string
+export function useQuery(): URLSearchParams {
+  const { search } = useLocation()
+  return React.useMemo(() => new URLSearchParams(search), [search])
 }

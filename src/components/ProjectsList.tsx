@@ -19,20 +19,6 @@ export function List({ title, children }: ListProps): JSX.Element {
   )
 }
 
-const Container = styled.div`
-  background-color: transparent;
-  display: flex;
-  flex-direction: column;
-  margin-top: 200px;
-  width: 100%;
-`
-const ListTitle = styled.h1`
-  font-size: 48px;
-  color: ${props => props.theme.text};
-  font-family: Montserrat;
-  margin-bottom: 20px;
-`
-
 // List item declaration
 interface ItemProps {
   project: Project
@@ -52,6 +38,21 @@ export function Item({ project }: ItemProps): JSX.Element {
     </ItemLink>
   )
 }
+
+// Styled components
+const Container = styled.div`
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  margin-top: 200px;
+  width: 100%;
+`
+const ListTitle = styled.h1`
+  font-size: 48px;
+  color: ${props => props.theme.text};
+  font-family: Montserrat;
+  margin-bottom: 20px;
+`
 
 const ItemLink = styled(Link)`
   display: flex;
@@ -90,6 +91,7 @@ const ItemLabel = styled.h2`
   color: ${props => props.theme.text};
   width: 100%;
   margin: 6px 0px 10px 0px;
+  transition: all 0.1s ease-in;
 
   &::first-letter {
     text-transform: uppercase;
@@ -101,4 +103,5 @@ const ItemDescription = styled.p`
   font-weight: 400;
   color: ${props => props.theme.opacityText};
   width: 100%;
+  transition: all 0.1s ease-in;
 `
