@@ -2,32 +2,40 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Tag } from '../firebase/database'
+import { useAppSelector } from '../store'
 import { useQuery } from './layouts/Layout'
 
 interface Props {
-  tag: Tag
+  tagName: string
 }
 
-export default function TagElement({ tag }: Props): JSX.Element {
+export default function TagElement({ tagName }: Props): JSX.Element {
   const query = useQuery()
   let target = '/?tags='
+
+  // Get tag by name
+  const availableTags = useAppSelector(state => state.projectsReducer.tags)
+  const [tag, setTag] = React.useState<Tag | null>(null)
+  React.useEffect(() => {
+    availableTags.then(availableTags => setTag(availableTags.find(tag => tag.name === tagName) ?? null))
+  })
 
   // Calculate new query params
   let tags = query.get('tags')?.split(' ') ?? []
   const initialTags = query.get('tags')?.split(' ') ?? []
 
-  if (initialTags.includes(tag.name)) {
-    tags.splice(tags.indexOf(tag.name), 1)
+  if (initialTags.includes(tagName)) {
+    tags.splice(tags.indexOf(tagName), 1)
   } else {
-    tags.push(tag.name)
+    tags.push(tagName)
   }
 
   target += tags.join('+')
   target = target === '/?tags=' ? '/' : target
 
   return (
-    <StyledLink to={target} color={tag.color} initialtags={initialTags} name={tag.name}>
-      {tag.name}
+    <StyledLink to={target} color={tag?.color ?? 'black'} initialtags={initialTags} name={tagName}>
+      {tagName}
     </StyledLink>
   )
 }
@@ -35,6 +43,7 @@ export default function TagElement({ tag }: Props): JSX.Element {
 const StyledLink = styled(Link)<StyledLinkProps>`
   color: ${props => props.theme.main};
   background-color: ${props => props.color};
+  z-index: 1;
   display: inline;
   padding: 2px 10px;
   margin: 6px 2px;
@@ -44,7 +53,7 @@ const StyledLink = styled(Link)<StyledLinkProps>`
   text-decoration: none;
   border-radius: 100px;
   transition: 0.2s ease-in;
-  opacity: ${({ initialtags, name }) => (initialtags.includes(name) || initialtags.length === 0 ? 1 : 0.7)};
+  opacity: ${({ initialtags, name }) => (initialtags.includes(name) || initialtags.length === 0 ? 1 : 0.5)};
 
   &:hover {
     color: ${props => props.theme.main};

@@ -16,6 +16,7 @@ export default function Layout(): JSX.Element {
   const { i18n, t } = useTranslation()
   const [pageInfo, setPageInfo] = React.useState<PageInfo | null>(null)
   const [isNavOpen, setIsNavOpen] = React.useState<boolean>(false)
+  console.log(window.innerWidth)
   const toggleNavOpen = () => setIsNavOpen(!isNavOpen)
 
   // Set body background
@@ -37,8 +38,8 @@ export default function Layout(): JSX.Element {
   const [tagItems, setTagItems] = React.useState<JSX.Element[] | null>(null)
   React.useEffect(() => {
     state.projectsReducer.tags
-      .then(tags => setTagItems(tags.map(tag => <TagElement tag={tag} key={tag.name} />)))
-      .then(_ => setIsNavOpen(true)) // Show layout when tags loaded
+      .then(tags => setTagItems(tags.map(tag => <TagElement tagName={tag.name} key={tag.name} />)))
+      .then(_ => setIsNavOpen(window.innerWidth > 1400)) // Show layout when tags loaded
   }, [state.projectsReducer.tags])
 
   return (
@@ -76,7 +77,7 @@ const Container = styled.div`
   left: 0;
   background-color: ${props => props.theme.background};
   overflow: hidden;
-  min-height: 100vh;
+  min-height: 101vh;
   min-width: 100%;
 `
 

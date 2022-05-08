@@ -8,6 +8,8 @@ export type Project = {
   nameRU: string
   descriptionEN: string
   descriptionRU: string
+  shortDescriptionEN: string
+  shortDescriptionRU: string
   mainImage: string
   images: string[]
   links: string[]

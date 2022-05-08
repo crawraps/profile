@@ -1,8 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Project } from '../firebase/database'
+import { Project, Tag } from '../firebase/database'
 import { useAppSelector } from '../store'
+import TagElement from './Tag'
 
 //List declaration
 interface ListProps {
@@ -27,13 +28,19 @@ interface ItemProps {
 export function Item({ project }: ItemProps): JSX.Element {
   // Set current language
   const lang: 'ru' | 'en' = useAppSelector(state => state.settingsReducer.lang)
+  const availableTags = useAppSelector(state => state.projectsReducer.tags)
 
   return (
     <ItemLink to={`project/${project.id}`}>
       <ItemImage src={project.mainImage} height={350} loading='lazy' />
       <ItemInfo>
         <ItemLabel>{lang === 'en' ? project.nameEN : project.nameRU}</ItemLabel>
-        <ItemDescription>{lang === 'en' ? project.descriptionEN : project.descriptionRU}</ItemDescription>
+        <ItemTags>
+          {project.tags.map(tagName => (
+            <TagElement tagName={tagName} key={tagName} />
+          ))}
+        </ItemTags>
+        <ItemDescription>{lang === 'en' ? project.shortDescriptionEN : project.shortDescriptionRU}</ItemDescription>
       </ItemInfo>
     </ItemLink>
   )
@@ -44,7 +51,7 @@ const Container = styled.div`
   background-color: transparent;
   display: flex;
   flex-direction: column;
-  margin-top: 200px;
+  margin-top: ${window.innerWidth > 1400 ? 200 : 40}px;
   width: 100%;
 `
 const ListTitle = styled.h1`
@@ -104,4 +111,12 @@ const ItemDescription = styled.p`
   color: ${props => props.theme.opacityText};
   width: 100%;
   transition: all 0.1s ease-in;
+  margin-bottom: 10px;
+  position: relative;
+  max-height: 100px;
+  overflow: hidden;
+`
+const ItemTags = styled.div`
+  width: 100%;
+  margin-bottom: 10px;
 `
