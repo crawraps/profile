@@ -8,5 +8,11 @@
   "list-title": "Projects",
   "tags-title": "Find by tag",
   "tags-button": "Сlear filter",
-  "about-title": "About me"
+  "about-title": "About me",
+  "favoriteFirst": "Favorite first",
+  "favoriteLast": "Favorite last",
+  "nameFirst": "Alphabet forward",
+  "nameLast": "Alphabet backward",
+  "updateFirst": "Update recently first",
+  "updateLast": "Update recently last"
 }

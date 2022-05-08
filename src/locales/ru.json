@@ -8,5 +8,11 @@
   "list-title": "Проекты",
   "tags-title": "Найти по тегу",
   "tags-button": "Очистить",
-  "about-title": "Обо мне"
+  "about-title": "Обо мне",
+  "favoriteFirst": "Любимые в начале",
+  "favoriteLast": "Любимые в конце",
+  "nameFirst": "А-Я",
+  "nameLast": "Я-А",
+  "updateFirst": "Обновлено недавно",
+  "updateLast": "Обновлено давно"
 }

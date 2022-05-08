@@ -3,6 +3,7 @@ import { motion, useAnimation, Variants } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { useQuery } from './layouts/Layout'
 
 interface Props {
   children: JSX.Element[] | null
@@ -10,6 +11,8 @@ interface Props {
 }
 
 export default function TagsContainer({ children, isOpen }: Props): JSX.Element {
+  const query = useQuery()
+
   // Get static text
   const { t } = useTranslation()
 
@@ -35,7 +38,7 @@ export default function TagsContainer({ children, isOpen }: Props): JSX.Element 
     >
       <TitleContainer>
         <Title>{t('tags-title')}</Title>
-        <ClearButton to='/'>{t('tags-button')}</ClearButton>
+        <ClearButton to={'/' + (query.has('sort') ? '?sort=' + query.get('sort') : '')}>{t('tags-button')}</ClearButton>
       </TitleContainer>
       <Content>{children}</Content>
     </Container>

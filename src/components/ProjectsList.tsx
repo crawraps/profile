@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Project, Tag } from '../firebase/database'
 import { useAppSelector } from '../store'
+import SortButton from './SortButton'
 import TagElement from './Tag'
 
 //List declaration
@@ -14,7 +15,10 @@ interface ListProps {
 export function List({ title, children }: ListProps): JSX.Element {
   return (
     <Container>
-      <ListTitle>{title}</ListTitle>
+      <ListTitleBlock>
+        <ListTitle>{title}</ListTitle>
+        <SortButton actions={['favoriteFirst', 'favoriteLast', 'nameFirst', 'nameLast', 'updateFirst', 'updateLast']} />
+      </ListTitleBlock>
       {children}
     </Container>
   )
@@ -54,11 +58,18 @@ const Container = styled.div`
   margin-top: ${window.innerWidth > 1400 ? 200 : 40}px;
   width: 100%;
 `
+const ListTitleBlock = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`
 const ListTitle = styled.h1`
   font-size: 48px;
   color: ${props => props.theme.text};
   font-family: Montserrat;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 `
 
 const ItemLink = styled(Link)`

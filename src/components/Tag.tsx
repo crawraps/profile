@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { Tag } from '../firebase/database'
 import { useAppSelector } from '../store'
@@ -11,7 +11,8 @@ interface Props {
 
 export default function TagElement({ tagName }: Props): JSX.Element {
   const query = useQuery()
-  let target = '/?tags='
+  const location = useLocation()
+  const [target, setTarget] = React.useState<string>('')
 
   // Get tag by name
   const availableTags = useAppSelector(state => state.projectsReducer.tags)
@@ -30,8 +31,20 @@ export default function TagElement({ tagName }: Props): JSX.Element {
     tags.push(tagName)
   }
 
-  target += tags.join('+')
-  target = target === '/?tags=' ? '/' : target
+  // Calculate target
+  React.useEffect(() => {
+    if (query.has('tags')) {
+      setTarget('/' + location.search.replace(initialTags.join('+'), tags.join('+')))
+    } else if (location.search) {
+      setTarget('/' + location.search + '&tags=' + tags.join('+'))
+    } else {
+      setTarget('/?tags=' + tags.join('+'))
+    }
+
+    if (tags.length === 0) {
+      setTarget('/' + location.search.replace('tags=' + initialTags.join('+'), ''))
+    }
+  }, [location])
 
   return (
     <StyledLink to={target} color={tag?.color} initialtags={initialTags} name={tagName}>
@@ -48,8 +61,8 @@ const StyledLink = styled(Link)<StyledLinkProps>`
   padding: 2px 10px;
   margin: 6px 2px;
   vertical-align: center;
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 14px;
+  line-height: 16px;
   text-decoration: none;
   border-radius: 100px;
   transition: color 0.2s ease-in;

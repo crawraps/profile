@@ -14,6 +14,7 @@ export type Project = {
   images: string[]
   links: string[]
   tags: string[]
+  favoriteIndex: number
 }
 
 export type Tag = {
