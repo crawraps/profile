@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { usePageInfo, useQuery } from '../components/layouts/Layout'
 import { List, Item } from '../components/ProjectsList'
-import { Tag } from '../firebase/database'
+import { Project, Tag } from '../firebase/database'
 import { useAppSelector } from '../store'
 
 export default function Home(): JSX.Element {
@@ -14,15 +14,20 @@ export default function Home(): JSX.Element {
     setPageInfo({ name: 'Projects' })
   })
 
-  // Get static text
+  // Get static text translation
   const { t } = useTranslation()
+
+  // Get lang
+  const lang: 'ru' | 'en' = useAppSelector(state => state.settingsReducer.lang)
 
   // Get query selector
   const query = useQuery()
   const [tags, setTags] = React.useState<string[]>([])
+  const [sortType, setSortType] = React.useState<string>('favoriteFirst')
   React.useEffect(() => {
     const tagNames = query.get('tags')?.split(' ') ?? []
     setTags(tagNames)
+    setSortType(query.get('sort') ?? 'favoriteFirst')
   }, [query])
 
   // Get projects by tags
@@ -33,10 +38,11 @@ export default function Home(): JSX.Element {
       setItems(
         res
           .filter(project => tags.filter(tag => project.tags.includes(tag)).length === tags.length)
+          .sort((a, b) => compare(a, b, sortType, lang))
           .map(project => <Item project={project} key={project.id} />)
       )
     )
-  }, [projects, tags])
+  }, [projects, tags, sortType])
 
   return (
     <StyledContainer fluid>
@@ -56,3 +62,31 @@ const StyledContainer = styled(Container)`
   min-height: 100vh;
   transition: background-color 0.2s ease-in;
 `
+
+// Compare function to sort projects
+function compare(a: Project, b: Project, sortType: string, lang: 'ru' | 'en') {
+  switch (sortType) {
+    case 'favoriteFirst':
+      return a.favoriteIndex - b.favoriteIndex
+    case 'favoriteLast':
+      return b.favoriteIndex - a.favoriteIndex
+    case 'nameFirst':
+      if (lang === 'en') {
+        return a.nameEN < b.nameEN ? -1 : 1
+      } else {
+        return a.nameRU < b.nameRU ? -1 : 1
+      }
+    case 'nameLast':
+      if (lang === 'en') {
+        return a.nameEN < b.nameEN ? 1 : -1
+      } else {
+        return a.nameRU < b.nameRU ? 1 : -1
+      }
+    case 'updateFirst': //! Create update info
+      return 0
+    case 'updateLast':
+      return 0
+    default:
+      return 0
+  }
+}
