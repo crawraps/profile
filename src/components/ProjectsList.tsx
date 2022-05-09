@@ -41,7 +41,7 @@ export function Item({ project }: ItemProps): JSX.Element {
         <ItemLabel>{lang === 'en' ? project.nameEN : project.nameRU}</ItemLabel>
         <ItemTags>
           {project.tags.map(tagName => (
-            <TagElement tagName={tagName} key={tagName} />
+            <TagElement type='tag' tagName={tagName} key={tagName} />
           ))}
         </ItemTags>
         <ItemDescription>{lang === 'en' ? project.shortDescriptionEN : project.shortDescriptionRU}</ItemDescription>
@@ -52,7 +52,6 @@ export function Item({ project }: ItemProps): JSX.Element {
 
 // Styled components
 const Container = styled.div`
-  background-color: ${props => props.theme.background};
   display: flex;
   flex-direction: column;
   align-items: center;

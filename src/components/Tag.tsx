@@ -7,9 +7,10 @@ import { useQuery } from './layouts/Layout'
 
 interface Props {
   tagName: string
+  type: 'tag' | 'link'
 }
 
-export default function TagElement({ tagName }: Props): JSX.Element {
+export default function TagElement({ tagName, type }: Props): JSX.Element {
   const query = useQuery()
   const location = useLocation()
   const [target, setTarget] = React.useState<string>('')
@@ -46,17 +47,23 @@ export default function TagElement({ tagName }: Props): JSX.Element {
     }
   }, [location])
 
-  return (
-    <StyledLink to={target} color={tag?.color} initialtags={initialTags} name={tagName}>
-      {tagName}
-    </StyledLink>
+  const elementProps = {
+    to: target,
+    color: tag?.color,
+    initialtags: initialTags,
+    name: tagName,
+  }
+
+  return type === 'tag' ? (
+    <TagType {...elementProps}>{tagName}</TagType>
+  ) : (
+    <LinkType {...elementProps}>{tagName}</LinkType>
   )
 }
 
-const StyledLink = styled(Link)<StyledLinkProps>`
+const TagType = styled(Link)<StyledElementProps>`
   color: ${props => props.theme.main};
   background-color: ${props => props?.color ?? props.theme.background};
-  z-index: 1;
   display: inline;
   padding: 2px 10px;
   margin: 6px 2px;
@@ -72,7 +79,16 @@ const StyledLink = styled(Link)<StyledLinkProps>`
     color: ${props => props.theme.main};
   }
 `
-interface StyledLinkProps {
+const LinkType = styled(Link)<StyledElementProps>`
+  color: ${props => props.theme.link};
+  text-decoration: none;
+  transition: 0.2s ease-in;
+
+  &:hover {
+    color: ${props => props.theme.primary};
+  }
+`
+interface StyledElementProps {
   color?: string
   initialtags: string[]
   name: string

@@ -54,7 +54,7 @@ function parseText(text: string, tags: string[]): JSX.Element[] {
         <Paragraph key={`paragraph-${index}`}>
           {part.split('/').map((piece, i) => {
             if (tags.includes(piece)) {
-              return <TagElement tagName={piece} key={`tag-${piece}-${index}-${i}`} />
+              return <TagElement type='link' tagName={piece} key={`tag-${piece}-${index}-${i}`} />
             }
             return piece
           })}
@@ -65,7 +65,6 @@ function parseText(text: string, tags: string[]): JSX.Element[] {
 }
 
 const StyledContainer = styled(Container)`
-  background-color: ${props => props.theme.background};
   min-height: 100vh;
   transition: background-color 0.2s ease-in;
 `

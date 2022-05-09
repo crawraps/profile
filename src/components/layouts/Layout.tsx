@@ -38,9 +38,16 @@ export default function Layout(): JSX.Element {
   const [tagItems, setTagItems] = React.useState<JSX.Element[] | null>(null)
   React.useEffect(() => {
     state.projectsReducer.tags
-      .then(tags => setTagItems(tags.map(tag => <TagElement tagName={tag.name} key={tag.name} />)))
+      .then(tags => setTagItems(tags.map(tag => <TagElement type='tag' tagName={tag.name} key={tag.name} />)))
       .then(_ => setIsNavOpen(window.innerWidth > 1400)) // Show layout when tags loaded
   }, [state.projectsReducer.tags])
+
+  // Close navbar function
+  const listItemClickHandler = () => {
+    if (window.innerWidth <= 1400) {
+      setIsNavOpen(false)
+    }
+  }
 
   return (
     <Container>
@@ -51,16 +58,33 @@ export default function Layout(): JSX.Element {
       <PatternHeader firstColor={theme.background} secondColor={theme.primary} />
 
       <MenuButton onClick={toggleNavOpen} isOpen={isNavOpen} lineProps={{ strokeWidth: 2 }} initial='opened' />
+
       <Navbar isOpen={isNavOpen}>
         <NavbarBlock title={t('nav-title-navigation')} as='links'>
-          <Link to='/'>{t('home-link')}</Link>
-          <Link to='about'>{t('about-link')}</Link>
+          <Link to='/' onClick={listItemClickHandler}>
+            {t('home-link')}
+          </Link>
+          <Link to='about' onClick={listItemClickHandler}>
+            {t('about-link')}
+          </Link>
         </NavbarBlock>
         <NavbarBlock title={t('nav-title-settings')} as='toggles'>
-          <button onClick={toggleTheme} name={state.settingsReducer.theme === 'dark' ? 'enable' : 'disable'}>
+          <button
+            onClick={() => {
+              toggleTheme()
+              listItemClickHandler()
+            }}
+            name={state.settingsReducer.theme === 'dark' ? 'enable' : 'disable'}
+          >
             {t('theme-button')}
           </button>
-          <button onClick={toggleLang} name={state.settingsReducer.lang === 'ru' ? 'enable' : 'disable'}>
+          <button
+            onClick={() => {
+              toggleLang()
+              listItemClickHandler()
+            }}
+            name={state.settingsReducer.lang === 'ru' ? 'enable' : 'disable'}
+          >
             {t('lang-button')}
           </button>
         </NavbarBlock>
@@ -84,6 +108,10 @@ const Container = styled.div`
 const PatternHeader = styled(PatternBackground)`
   height: 200px;
   position: fixed;
+
+  @media screen and (max-width: 767px) {
+    height: 0px;
+  }
 `
 const Content = styled.div`
   margin-top: 200px;
@@ -92,6 +120,11 @@ const Content = styled.div`
   z-index: 1;
   background-color: ${props => props.theme.background};
   padding-top: 60px;
+  transition: 0.2s ease-in;
+
+  @media screen and (max-width: 767px) {
+    margin-top: 0px;
+  }
 `
 
 // Create custom hook to access page information

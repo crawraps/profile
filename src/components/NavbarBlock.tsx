@@ -17,7 +17,7 @@ export default function NavbarBlock({ children, title, as }: Props): JSX.Element
     switch (as) {
       case 'links':
         return (
-          <StyledLink {...child.props} key={`link-${child.props.children}`}>
+          <StyledLink {...child.props} key={`link-${child.props.children}`} onClick={child.props.onClick}>
             {child.props.children}
           </StyledLink>
         )

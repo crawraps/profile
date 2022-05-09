@@ -27,7 +27,7 @@ export default function MenuButton({
   const theme = useTheme()
   const variant = isOpen ? 'opened' : 'closed'
 
-  color = !color ? theme.secondary : color
+  color = !color ? theme.primary : color
 
   const top: Variants = {
     closed: {

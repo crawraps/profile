@@ -12,6 +12,7 @@ export type Colorscheme = {
   opacityBackground: string
   text: string
   opacityText: string
+  link: string
   elevation: ElevationLevel[]
 }
 
@@ -28,6 +29,7 @@ const darkTheme: Colorscheme = {
   opacityBackground: '#151515',
   text: '#ffffff',
   opacityText: 'rgba(255, 255, 255, .8)',
+  link: '#60a199',
   elevation: [
     {
       shadow: '',
@@ -56,6 +58,7 @@ const lightTheme: Colorscheme = {
   opacityBackground: '#e3e3e3',
   text: '#000000',
   opacityText: 'rgba(0, 0, 0, .8)',
+  link: '#bf806c',
   elevation: [
     {
       shadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',

@@ -21,7 +21,7 @@ export default function Navbar({ isOpen, children }: Props): JSX.Element {
     <Container
       animate={isOpen ? 'visible' : 'hidden'}
       variants={navbarVariant}
-      initial='visible'
+      initial='hidden'
       transition={{ ease: 'easeOut', duration: 0.2 }}
     >
       {children}
@@ -30,7 +30,7 @@ export default function Navbar({ isOpen, children }: Props): JSX.Element {
 }
 
 const Container = styled(motion.div)`
-  width: ${window.innerWidth < 576 ? '100vh' : '320px'};
+  width: 320px;
   height: 100vh;
   top: 0px;
   display: flex;
@@ -43,4 +43,8 @@ const Container = styled(motion.div)`
   box-shadow: ${props => props.theme.elevation[0].shadow};
   background-color: ${props => props.theme.elevation[0].color};
   z-index: 2;
+
+  @media screen and (max-width: 768px) {
+    width: 100vh;
+  }
 `
