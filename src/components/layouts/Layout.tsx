@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../store'
 import MenuButton from '../MenuButton'
 import Navbar from '../Navbar'
 import NavbarBlock from '../NavbarBlock'
+import PatternBackground from '../PatternBackround'
 import TagElement from '../Tag'
 import TagsContainer from '../TagsContainer'
 
@@ -18,11 +19,11 @@ export default function Layout(): JSX.Element {
   const [isNavOpen, setIsNavOpen] = React.useState<boolean>(false)
   const toggleNavOpen = () => setIsNavOpen(!isNavOpen)
 
-  // Set body background
+  // Set body background to support firefox scroll bar background color
   const theme = useTheme()
-  React.useState(() => {
+  React.useEffect(() => {
     document.body.style.backgroundColor = theme.background
-  })
+  }, [theme])
 
   // Function to toggle language and theme
   const toggleLang = () => {
@@ -47,6 +48,8 @@ export default function Layout(): JSX.Element {
         <title>{`Crawraps | ${pageInfo?.name}`}</title>
       </Helmet>
 
+      <PatternHeader firstColor={theme.background} secondColor={theme.primary} />
+
       <MenuButton onClick={toggleNavOpen} isOpen={isNavOpen} lineProps={{ strokeWidth: 2 }} initial='opened' />
       <Navbar isOpen={isNavOpen}>
         <NavbarBlock title={t('nav-title-navigation')} as='links'>
@@ -65,19 +68,30 @@ export default function Layout(): JSX.Element {
 
       <TagsContainer isOpen={isNavOpen}>{tagItems}</TagsContainer>
 
-      <Outlet context={setPageInfo} />
+      <Content>
+        <Outlet context={setPageInfo} />
+      </Content>
     </Container>
   )
 }
 
 const Container = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
   background-color: ${props => props.theme.background};
   overflow: hidden;
   min-height: 101vh;
   min-width: 100%;
+`
+const PatternHeader = styled(PatternBackground)`
+  height: 200px;
+  position: fixed;
+`
+const Content = styled.div`
+  margin-top: 200px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  background-color: ${props => props.theme.background};
+  padding-top: 60px;
 `
 
 // Create custom hook to access page information

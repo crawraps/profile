@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { usePageInfo, useQuery } from '../components/layouts/Layout'
+import Loader from '../components/Loader'
 import { List, Item } from '../components/ProjectsList'
 import { Project, Tag } from '../firebase/database'
 import { useAppSelector } from '../store'
@@ -32,7 +33,7 @@ export default function Home(): JSX.Element {
 
   // Get projects by tags
   const projects = useAppSelector(state => state.projectsReducer.projects)
-  const [items, setItems] = React.useState<JSX.Element[]>([<div key='loader'>Loading...</div>])
+  const [items, setItems] = React.useState<JSX.Element[]>([<Loader style={{ marginTop: 200 }} dots={5} />])
   React.useEffect(() => {
     projects.then(res =>
       setItems(
@@ -58,7 +59,7 @@ export default function Home(): JSX.Element {
 }
 
 const StyledContainer = styled(Container)`
-  background-color: ${props => props.theme.background};
+  background-color: transparent;
   min-height: 100vh;
   transition: background-color 0.2s ease-in;
 `

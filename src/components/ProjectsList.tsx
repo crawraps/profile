@@ -52,10 +52,10 @@ export function Item({ project }: ItemProps): JSX.Element {
 
 // Styled components
 const Container = styled.div`
-  background-color: transparent;
+  background-color: ${props => props.theme.background};
   display: flex;
   flex-direction: column;
-  margin-top: ${window.innerWidth > 1400 ? 200 : 40}px;
+  align-items: center;
   width: 100%;
 `
 const ListTitleBlock = styled.div`
