@@ -1,18 +1,35 @@
-import { aboutReducer } from './aboutReducer'
-import { projectsReducer } from './projectsReducer'
-import { settingsReducer } from './settingsReducer'
+import { dataReducer } from './dataReducer'
+import { setLang, setTheme, settingsReducer } from './settingsReducer'
 import { configureStore } from '@reduxjs/toolkit'
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import { fetchAboutText, fetchProjects, fetchTags } from '../firebase/database'
+import i18next from 'i18next'
 
 export const store = configureStore({
-  reducer: { settingsReducer, projectsReducer, aboutReducer },
+  reducer: { settings: settingsReducer, data: dataReducer },
   middleware: getDeaultMiddleware => getDeaultMiddleware({ serializableCheck: false }),
 })
+
+// Setup storae
+export function setupStore() {
+  // Fetch database
+  store.dispatch(fetchProjects)
+  store.dispatch(fetchTags)
+  store.dispatch(fetchAboutText)
+
+  // Set language and theme by user preferences
+  store.dispatch(setLang((localStorage.getItem('lang') ?? i18next.language) as 'en' | 'ru'))
+  const theme = localStorage.getItem('theme')
+  if (theme) {
+    store.dispatch(setTheme(localStorage.getItem('theme') as 'light' | 'dark'))
+  } else {
+    if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+      store.dispatch(setTheme('light'))
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      store.dispatch(setTheme('dark'))
+    }
+  }
+}
 
 // Define store types
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
-
-// Define typed hooks
-export const useAppDispatch = () => useDispatch<AppDispatch>()
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector

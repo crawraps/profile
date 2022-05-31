@@ -4,32 +4,38 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import Loader from '../components/Loader'
 import TagElement from '../components/Tag'
-import { useAppSelector } from '../store'
+import { Tag } from '../firebase/database'
+import { useAppSelector, usePageInfo } from '../hooks'
 
 export default function About(): JSX.Element {
   const [plainText, setPlainText] = React.useState<string | null>(null)
   const [tagNames, setTagNames] = React.useState<string[]>([])
-  const lang = useAppSelector(state => state.settingsReducer.lang)
-  const text = useAppSelector(state => state.aboutReducer.text)
-  const tags = useAppSelector(state => state.projectsReducer.tags)
-  React.useEffect(() => {
-    text.then(text => setPlainText(lang === 'en' ? text.textEN : text.textRU))
-  }, [lang])
+  const state = useAppSelector(state => state)
 
+  // Set page title
+  const setPageInfo = usePageInfo()
   React.useEffect(() => {
-    tags.then(tags => setTagNames(tags.map(tag => tag.name)))
-  }, [tags])
-
-  // Parse plain text
-  const [resultText, setResultText] = React.useState<Array<JSX.Element>>([
-    <Loader dots={5} style={{ margin: '300px auto' }} />,
-  ])
-  React.useEffect(() => {
-    if (plainText) setResultText(parseText(plainText, tagNames))
-  }, [tagNames, plainText])
+    setPageInfo({ name: 'About' })
+  })
 
   // Translate static text
   const { t } = useTranslation()
+
+  // Get current text by language
+  React.useEffect(() => {
+    setPlainText(state.settings.lang === 'en' ? state.data.aboutText.textEN : state.data.aboutText.textRU)
+  }, [state.settings.lang, state.data.aboutText])
+
+  // Get tags
+  React.useEffect(() => {
+    setTagNames(state.data.tags.map((tag: Tag) => tag.name))
+  }, [state.data.tags])
+
+  // Parse plain text
+  const [resultText, setResultText] = React.useState<JSX.Element[] | null>(null)
+  React.useEffect(() => {
+    if (plainText) setResultText(parseText(plainText, tagNames))
+  }, [tagNames, plainText])
 
   return (
     <StyledContainer fluid>
@@ -37,7 +43,7 @@ export default function About(): JSX.Element {
         <Col sm={2} lg={3}></Col>
         <Col sm={8} lg={6}>
           <Title>{plainText ? t('about-title') : null}</Title>
-          {resultText}
+          {resultText?.length ? resultText : <Loader dots={5} style={{ margin: '300px auto' }} />}
         </Col>
         <Col sm={2} lg={3}></Col>
       </Row>
@@ -81,6 +87,6 @@ const Subtitle = styled.h2`
 const Paragraph = styled.p`
   color: ${props => props.theme.opacityText};
   font-size: 16px;
-  line-height: 1.5em;
+  line-height: 1.7em;
   letter-spacing: 0.2px;
 `

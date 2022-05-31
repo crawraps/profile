@@ -1,3 +1,4 @@
+import { AppDispatch, RootState } from './../store/index'
 import { getFirestore, getDocs, collection } from 'firebase/firestore'
 import app from '.'
 
@@ -28,7 +29,7 @@ export interface AboutText {
   textEN: string
 }
 
-export async function getProjects(): Promise<Project[]> {
+export async function fetchProjects(dispatch: AppDispatch, getState: () => RootState) {
   const projects: Project[] = []
   await getDocs(collection(db, 'projects'))
     .then(res => {
@@ -40,10 +41,13 @@ export async function getProjects(): Promise<Project[]> {
     })
     .catch(err => console.log(`An error occurred while getting projects. ${err}`))
 
-  return projects
+  dispatch({ type: 'addProjects', value: projects })
+  if (getState().data.tags.length !== 0) {
+    dispatch({ type: 'setLoaded', value: true })
+  }
 }
 
-export async function getTags(): Promise<Tag[]> {
+export async function fetchTags(dispatch: AppDispatch, getState: () => RootState) {
   const tags: Tag[] = []
   await getDocs(collection(db, 'tags'))
     .then(res =>
@@ -54,14 +58,17 @@ export async function getTags(): Promise<Tag[]> {
     )
     .catch(err => console.log(`An error occurred while getting tags. ${err}`))
 
-  return tags
+  dispatch({ type: 'addTags', value: tags })
+  if (getState().data.projects.length !== 0) {
+    dispatch({ type: 'setLoaded', value: true })
+  }
 }
 
-export async function getAboutText(): Promise<AboutText> {
+export async function fetchAboutText(dispatch: AppDispatch, getState: () => RootState) {
   let text: AboutText = { textEN: '', textRU: '' }
   await getDocs(collection(db, 'about'))
     .then(res => res.forEach(doc => (text = doc.data() as AboutText)))
     .catch(err => console.log(`An error occurred while getting about text. ${err}`))
 
-  return text
+  dispatch({ type: 'addAboutText', value: text })
 }

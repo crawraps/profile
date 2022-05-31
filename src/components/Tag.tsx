@@ -2,8 +2,7 @@ import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { Tag } from '../firebase/database'
-import { useAppSelector } from '../store'
-import { useQuery } from './layouts/Layout'
+import { useQuery, useAppSelector } from '../hooks'
 
 interface Props {
   tagName: string
@@ -14,13 +13,11 @@ export default function TagElement({ tagName, type }: Props): JSX.Element {
   const query = useQuery()
   const location = useLocation()
   const [target, setTarget] = React.useState<string>('')
+  const availableTags = useAppSelector(state => state.data.tags)
 
   // Get tag by name
-  const availableTags = useAppSelector(state => state.projectsReducer.tags)
   const [tag, setTag] = React.useState<Tag | null>(null)
-  React.useEffect(() => {
-    availableTags.then(availableTags => setTag(availableTags.find(tag => tag.name === tagName) ?? null))
-  })
+  React.useEffect(() => setTag(availableTags.find((tag: Tag) => tag.name === tagName) ?? null), [availableTags])
 
   // Calculate new query params
   let tags = query.get('tags')?.split(' ') ?? []
@@ -33,19 +30,23 @@ export default function TagElement({ tagName, type }: Props): JSX.Element {
   }
 
   // Calculate target
-  React.useEffect(() => {
+  const getTarget = React.useCallback(() => {
+    let target = ''
     if (query.has('tags')) {
-      setTarget('/' + location.search.replace(initialTags.join('+'), tags.join('+')))
+      target = '/' + location.search.replace(initialTags.join('+'), tags.join('+'))
     } else if (location.search) {
-      setTarget('/' + location.search + '&tags=' + tags.join('+'))
+      target = '/' + location.search + '&tags=' + tags.join('+')
     } else {
-      setTarget('/?tags=' + tags.join('+'))
+      target = '/?tags=' + tags.join('+')
     }
 
     if (tags.length === 0) {
-      setTarget('/' + location.search.replace('tags=' + initialTags.join('+'), ''))
+      target = '/' + location.search.replace('tags=' + initialTags.join('+'), '')
     }
+
+    return target
   }, [location])
+  React.useEffect(() => setTarget(getTarget()), [getTarget])
 
   const elementProps = {
     to: target,

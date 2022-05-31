@@ -1,9 +1,9 @@
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, Transition, Variants } from 'framer-motion'
 import styled from 'styled-components'
 
 export default function ThreeDotsWave(props: any) {
-  const loadingContainerVariants = {
+  const loadingContainerVariants: Variants = {
     start: {
       transition: {
         staggerChildren: 0.1,
@@ -16,19 +16,22 @@ export default function ThreeDotsWave(props: any) {
     },
   }
 
-  const loadingCircleVariants = {
+  const loadingCircleVariants: Variants = {
     start: {
-      height: '0%',
+      y: 0,
+      opacity: 0,
     },
     end: {
-      height: '100%',
+      y: 40,
+      opacity: 1,
     },
   }
 
-  const loadingCircleTransition = {
+  const loadingCircleTransition: Transition = {
     duration: 0.4,
-    type: 'spring',
-    yoyo: Infinity,
+    type: 'tween',
+    repeat: Infinity,
+    repeatType: 'reverse',
   }
 
   return (
@@ -45,7 +48,7 @@ const Container = styled(motion.div)`
   height: 2rem;
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-items: start;
 `
 const Dot = styled(motion.span)`
   display: block;

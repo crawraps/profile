@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
-import { motion, useAnimation, Variants } from 'framer-motion'
+import React from 'react'
+import { motion, useAnimation } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { useQuery } from './layouts/Layout'
+import { useQuery } from '../hooks'
 
 interface Props {
   children: JSX.Element[] | null
@@ -19,7 +19,7 @@ export default function TagsContainer({ children, isOpen }: Props): JSX.Element 
   // Animations
   const controls = useAnimation()
 
-  useEffect(() => {
+  React.useEffect(() => {
     controls.start(() => ({
       right: isOpen ? 20 : -320,
       transition: {

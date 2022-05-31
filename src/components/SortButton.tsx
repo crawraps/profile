@@ -3,7 +3,7 @@ import { Dropdown, DropdownButton } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import { useQuery } from './layouts/Layout'
+import { useQuery } from '../hooks'
 
 interface Actions {
   favoriteFirst: string
@@ -35,7 +35,7 @@ export default function SortButton({ actions }: Props): JSX.Element {
   const [target, setTarget] = React.useState<string>('')
   React.useEffect(() => {
     if (query.has('sort')) {
-      setTarget(`/` + location.search.replace(query?.get('sort') ?? '', ''))
+      setTarget('/' + location.search.replace(`sort=${query?.get('sort')}`, '') + '&sort=')
     } else if (location.search) {
       setTarget('/' + location.search + '&sort=')
     } else {
@@ -49,8 +49,18 @@ export default function SortButton({ actions }: Props): JSX.Element {
     </Item>
   ))
 
+  // Get button title
+  const [title, setTitle] = React.useState<string | JSX.Element>(actions[0])
+  React.useEffect(() => {
+    if (window.innerWidth < 762) {
+      setTitle(<i className='fa fa-sort' />)
+    } else {
+      setTitle(t(query?.get('sort') ?? actions[0]))
+    }
+  }, [query, t])
+
   return (
-    <Button id='sort-button' title={t(query?.get('sort') ?? actions[0])}>
+    <Button id='sort-button' title={title}>
       {links}
     </Button>
   )
@@ -61,14 +71,19 @@ const Button = styled(DropdownButton)`
     background-color: ${props => props.theme.background};
     box-shadow: none;
     border: none;
-    padding: 0 0 8px 0;
+    padding: 0;
     transition: 0.2s ease-in;
     color: ${props => props.theme.text};
+    min-width: 150px;
+    text-align: end;
   }
 
   .dropdown-menu {
     background-color: ${props => props.theme.background};
-    border-radius: 8px;
+    border-radius: 5px;
+    border: none;
+    background-color: ${props => props.theme.elevation[1].color};
+    box-shadow: ${props => props.theme.elevation[1].shadow};
   }
 `
 const Item = styled(Dropdown.Item)`
@@ -78,7 +93,6 @@ const Item = styled(Dropdown.Item)`
   padding: 4px 14px;
   text-decoration: none;
   color: ${props => props.theme.text};
-  background-color: ${props => props.theme.background};
 
   &:hover {
     background-color: ${props => props.theme.primary};

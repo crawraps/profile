@@ -2,11 +2,10 @@ import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { usePageInfo, useQuery } from '../components/layouts/Layout'
+import { useAppSelector, usePageInfo, useQuery } from '../hooks'
 import Loader from '../components/Loader'
 import { List, Item } from '../components/ProjectsList'
-import { Project, Tag } from '../firebase/database'
-import { useAppSelector } from '../store'
+import { Project } from '../firebase/database'
 
 export default function Home(): JSX.Element {
   // Set page title
@@ -18,8 +17,9 @@ export default function Home(): JSX.Element {
   // Get static text translation
   const { t } = useTranslation()
 
-  // Get lang
-  const lang: 'ru' | 'en' = useAppSelector(state => state.settingsReducer.lang)
+  // Get lang and data loading state
+  const lang: 'ru' | 'en' = useAppSelector(state => state.settings.lang)
+  const isReady: boolean = useAppSelector(state => state.data.loaded)
 
   // Get query selector
   const query = useQuery()
@@ -32,25 +32,29 @@ export default function Home(): JSX.Element {
   }, [query])
 
   // Get projects by tags
-  const projects = useAppSelector(state => state.projectsReducer.projects)
-  const [items, setItems] = React.useState<JSX.Element[]>([<Loader style={{ marginTop: 200 }} dots={5} />])
+  const projects: Project[] = useAppSelector(state => state.data.projects)
+  const [items, setItems] = React.useState<JSX.Element[] | null>(null)
   React.useEffect(() => {
-    projects.then(res =>
-      setItems(
-        res
-          .filter(project => tags.filter(tag => project.tags.includes(tag)).length === tags.length)
-          .sort((a, b) => compare(a, b, sortType, lang))
-          .map(project => <Item project={project} key={project.id} />)
-      )
+    setItems(
+      projects
+        .filter(project => tags.filter(tag => project.tags.includes(tag)).length === tags.length)
+        .sort((a, b) => compare(a, b, sortType, lang))
+        .map(project => <Item project={project} key={project.id} />)
     )
   }, [projects, tags, sortType])
+
+  // Get filler placeholder component
+  const [placeholder, setPlaceholder] = React.useState<JSX.Element>(<Loader style={{ marginTop: 200 }} dots={5} />)
+  React.useEffect(() => {
+    setPlaceholder(isReady ? <Nothing>{t('nothing-text')}</Nothing> : <Loader style={{ marginTop: 200 }} dots={5} />)
+  }, [isReady, lang])
 
   return (
     <StyledContainer fluid>
       <Row>
         <Col sm={2} lg={3}></Col>
         <Col sm={8} lg={6}>
-          <List title={t('list-title')}>{items}</List>
+          <List title={t('list-title')}>{items?.length ? items : placeholder}</List>
         </Col>
         <Col sm={2} lg={3}></Col>
       </Row>
@@ -62,6 +66,13 @@ const StyledContainer = styled(Container)`
   background-color: transparent;
   min-height: 100vh;
   transition: background-color 0.2s ease-in;
+`
+const Nothing = styled.h3`
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+  margin: 100px 0;
+  color: ${props => props.theme.opacityText};
 `
 
 // Compare function to sort projects

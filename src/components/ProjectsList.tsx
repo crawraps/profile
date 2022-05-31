@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Project, Tag } from '../firebase/database'
-import { useAppSelector } from '../store'
+import { Project } from '../firebase/database'
+import { useAppSelector } from '../hooks'
 import SortButton from './SortButton'
 import TagElement from './Tag'
 
@@ -31,8 +31,7 @@ interface ItemProps {
 
 export function Item({ project }: ItemProps): JSX.Element {
   // Set current language
-  const lang: 'ru' | 'en' = useAppSelector(state => state.settingsReducer.lang)
-  const availableTags = useAppSelector(state => state.projectsReducer.tags)
+  const lang: 'ru' | 'en' = useAppSelector(state => state.settings.lang)
 
   return (
     <ItemLink to={`project/${project.id}`}>
@@ -60,7 +59,7 @@ const Container = styled.div`
 const ListTitleBlock = styled.div`
   width: 100%;
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
 `
