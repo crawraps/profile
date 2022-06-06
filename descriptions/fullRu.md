@@ -1,10 +1,10 @@
 [mainimage]: https://images.unsplash.com/photo-1651784011426-7248cb26b11f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80 'Alt main image text'
 
-# This is description of the profile project
+# Это описание моего портфолио на русском языке
 
-I want to add some text to this file to preview different features of markdown, so I can create good view of this things in my site.
+Я хочу добавить немного текста в этот файл для предварительного просмотра различных функций markdown, чтобы я мог создать хорошее представление об этом на своем сайте.
 
-## Some code for no reason
+## Немного кода
 
 ```typescript
 let variable = 'Not a constant'
@@ -19,27 +19,27 @@ function itIsTooHard() {
 }
 ```
 
-## Next is the list
+## Следующее это лист
 
-- I think
-  1. it should
-  2. be a list
-- or no
-  - I don't know how
-  - it works properly
-    - But I'm trying
+- Я думаю
+  1. это должен
+  2. быть лист
+- или нет
+  - Я не знаю как
+  - это работает в точности
+    - но я пытаюсь
 
-## And the image
+## И изображение
 
-### Header 3 I think is enough
+### Трех видов заголовков достаточно, мне кажется
 
-I should add some text here so it doesn't look like fuck.\
-I don't understand
+Мне следует добавить немного текста сюда, чтобы это не выглядело так некрасиво.\
+Следующая строка.
 
 ![alt text](https://images.unsplash.com/photo-1654490960674-06281cf1e248?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80 'Alt text')
 
-## And quotes in the end
+## И немного цитат
 
-> How much?
+> Сколько?
 
-30 seconds are given for reflection.
+На размышление дается 30 секунд.
