@@ -1,0 +1,1 @@
+This is short description of my profile project. Lorem ipsum dolar sit amet and so on. I think the most difficult thing in creating my projects will be creation of the descriptions and the most difficult thing in this project will be filling with content.

@@ -15,7 +15,7 @@ export async function fetchRepo(gitUrl: string) {
 }
 
 export async function fetchDescription(gitUrl: string, name: keyof ProjectDescriptions) {
-  return fetch(`${GIT_API_URL}/repos${gitUrl.split('.com')[1]}/contents/description/${name}.md`)
+  return fetch(`${GIT_API_URL}/repos${gitUrl.split('.com')[1]}/contents/descriptions/${name}.md`)
     .then(res => res.json())
     .then(res => atob(res.content))
     .catch(err => console.error(`Error while fetching description file: ${err}`))
