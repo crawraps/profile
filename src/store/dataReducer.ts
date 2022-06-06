@@ -1,4 +1,4 @@
-import { AboutText, Project, Tag } from '../firebase/database'
+import { AboutText, Project, Tag } from '../apis/types'
 import { AnyAction } from '@reduxjs/toolkit'
 
 interface DefaultState {

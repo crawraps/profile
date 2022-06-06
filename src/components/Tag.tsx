@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import { Tag } from '../firebase/database'
+import { Tag } from '../apis/types'
 import { useQuery, useAppSelector } from '../hooks'
 
 interface Props {

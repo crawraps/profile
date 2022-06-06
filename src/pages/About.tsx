@@ -4,13 +4,15 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import Loader from '../components/Loader'
 import TagElement from '../components/Tag'
-import { Tag } from '../firebase/database'
-import { useAppSelector, usePageInfo } from '../hooks'
+import { Tag } from '../apis/types'
+import { useAppDispatch, useAppSelector, usePageInfo } from '../hooks'
+import { fetchAboutText } from '../apis/database'
 
 export default function About(): JSX.Element {
   const [plainText, setPlainText] = React.useState<string | null>(null)
   const [tagNames, setTagNames] = React.useState<string[]>([])
   const state = useAppSelector(state => state)
+  const dispatch = useAppDispatch()
 
   // Set page title
   const setPageInfo = usePageInfo()
@@ -20,6 +22,14 @@ export default function About(): JSX.Element {
 
   // Translate static text
   const { t } = useTranslation()
+
+  // Fetch about text on first visit
+  React.useEffect(() => {
+    // Check if about text doesn't exist in the store
+    if (!state.data.aboutText['text' + state.settings.lang.toUpperCase()]) {
+      dispatch(fetchAboutText)
+    }
+  })
 
   // Get current text by language
   React.useEffect(() => {
@@ -32,7 +42,9 @@ export default function About(): JSX.Element {
   }, [state.data.tags])
 
   // Parse plain text
-  const [resultText, setResultText] = React.useState<JSX.Element[] | null>(null)
+  const [resultText, setResultText] = React.useState<JSX.Element[] | JSX.Element>(
+    <Loader dots={5} style={{ margin: '300px auto' }} />
+  )
   React.useEffect(() => {
     if (plainText) setResultText(parseText(plainText, tagNames))
   }, [tagNames, plainText])
@@ -43,7 +55,7 @@ export default function About(): JSX.Element {
         <Col sm={2} lg={3}></Col>
         <Col sm={8} lg={6}>
           <Title>{plainText ? t('about-title') : null}</Title>
-          {resultText?.length ? resultText : <Loader dots={5} style={{ margin: '300px auto' }} />}
+          {resultText}
         </Col>
         <Col sm={2} lg={3}></Col>
       </Row>

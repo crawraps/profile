@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Project } from '../firebase/database'
+import { Project } from '../apis/types'
 import { useAppSelector } from '../hooks'
 import SortButton from './SortButton'
 import TagElement from './Tag'
@@ -43,7 +43,9 @@ export function Item({ project }: ItemProps): JSX.Element {
             <TagElement type='tag' tagName={tagName} key={tagName} />
           ))}
         </ItemTags>
-        <ItemDescription>{lang === 'en' ? project.shortDescriptionEN : project.shortDescriptionRU}</ItemDescription>
+        <ItemDescription>
+          {lang === 'en' ? project.descriptions.shortEng : project.descriptions.shortRu}
+        </ItemDescription>
       </ItemInfo>
     </ItemLink>
   )
@@ -71,6 +73,7 @@ const ListTitle = styled.h1`
 `
 
 const ItemLink = styled(Link)`
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin: 10px 0px;

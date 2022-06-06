@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { useAppSelector, usePageInfo, useQuery } from '../hooks'
 import Loader from '../components/Loader'
 import { List, Item } from '../components/ProjectsList'
-import { Project } from '../firebase/database'
+import { Project } from '../apis/types'
 
 export default function Home(): JSX.Element {
   // Set page title

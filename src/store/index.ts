@@ -1,7 +1,7 @@
 import { dataReducer } from './dataReducer'
 import { setLang, setTheme, settingsReducer } from './settingsReducer'
 import { configureStore } from '@reduxjs/toolkit'
-import { fetchAboutText, fetchProjects, fetchTags } from '../firebase/database'
+import { fetchAboutText, fetchProjects, fetchTags } from '../apis/database'
 import i18next from 'i18next'
 
 export const store = configureStore({
@@ -14,10 +14,9 @@ export function setupStore() {
   // Fetch database
   store.dispatch(fetchProjects)
   store.dispatch(fetchTags)
-  store.dispatch(fetchAboutText)
 
   // Set language and theme by user preferences
-  store.dispatch(setLang((localStorage.getItem('lang') ?? i18next.language) as 'en' | 'ru'))
+  store.dispatch(setLang((localStorage.getItem('lang') ?? i18next.language.split('-')[0]) as 'en' | 'ru'))
   const theme = localStorage.getItem('theme')
   if (theme) {
     store.dispatch(setTheme(localStorage.getItem('theme') as 'light' | 'dark'))
