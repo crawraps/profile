@@ -20,7 +20,7 @@ export default function Layout(): JSX.Element {
   const state = useAppSelector(state => state)
   const theme = useTheme()
 
-  // Function to toggle language, theme and navbar state
+  // Functions to toggle language, theme and navbar state
   const toggleLang = () => {
     dispatch(setLang(state.settings.lang === 'en' ? 'ru' : 'en'))
   }
@@ -41,7 +41,7 @@ export default function Layout(): JSX.Element {
   return (
     <Container>
       <Helmet>
-        <title>{`Crawraps | ${pageInfo?.name}`}</title>
+        <title>{`${pageInfo?.name} | Crawraps`}</title>
       </Helmet>
 
       <PatternHeader firstColor={theme.background} secondColor={theme.primary} />
