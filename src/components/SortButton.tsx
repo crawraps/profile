@@ -43,12 +43,6 @@ export default function SortButton({ actions }: Props): JSX.Element {
     }
   }, [location])
 
-  const links = actions.map(action => (
-    <Item as={Link} to={target + availableActions[action]} key={action}>
-      {t(action)}
-    </Item>
-  ))
-
   // Get button title
   const [title, setTitle] = React.useState<string | JSX.Element>(actions[0])
   React.useEffect(() => {
@@ -58,6 +52,17 @@ export default function SortButton({ actions }: Props): JSX.Element {
       setTitle(t(query?.get('sort') ?? actions[0]))
     }
   }, [query, t])
+
+  const links = actions.map(action => (
+    <Item
+      as={Link}
+      to={target + availableActions[action]}
+      key={action}
+      activated={action === (query?.get('sort') ?? availableActions.favoriteFirst)}
+    >
+      {t(action)}
+    </Item>
+  ))
 
   return (
     <Button id='sort-button' title={title}>
@@ -86,16 +91,20 @@ const Button = styled(DropdownButton)`
     box-shadow: ${props => props.theme.elevation[1].shadow};
   }
 `
-const Item = styled(Dropdown.Item)`
+const Item = styled(Dropdown.Item)<ItemProps>`
   display: block;
   font-size: 14px;
   margin: 0px;
   padding: 4px 14px;
   text-decoration: none;
   color: ${props => props.theme.text};
+  background-color: ${props => (props.activated ? props.theme.secondary : '')};
 
   &:hover {
     background-color: ${props => props.theme.primary};
     color: ${props => props.theme.text};
   }
 `
+interface ItemProps {
+  activated: boolean
+}
