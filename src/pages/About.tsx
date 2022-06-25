@@ -17,8 +17,8 @@ export default function About(): JSX.Element {
   // Set page title
   const setPageInfo = usePageInfo()
   React.useEffect(() => {
-    setPageInfo({ name: 'About' })
-  })
+    setPageInfo({ name: state.settings.lang === 'en' ? 'About' : 'Обо мне', page: 'about' })
+  }, [state.settings.lang])
 
   // Translate static text
   const { t } = useTranslation()

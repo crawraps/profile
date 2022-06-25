@@ -1,14 +1,15 @@
+import { motion } from 'framer-motion'
 import React from 'react'
 
 interface Props {
   firstColor: string
   secondColor: string
-  [key: string]: string
+  [key: string]: any
 }
 
 export default function PatternBackground({ firstColor, secondColor, ...props }: Props) {
   return (
-    <svg height='100%' width='100%' {...props}>
+    <motion.svg height='100%' width='100%' {...props}>
       <defs>
         <pattern
           id='doodad'
@@ -37,6 +38,6 @@ export default function PatternBackground({ firstColor, secondColor, ...props }:
         </pattern>
       </defs>
       <rect fill='url(#doodad)' height='100%' width='100%' />
-    </svg>
+    </motion.svg>
   )
 }

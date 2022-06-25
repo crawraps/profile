@@ -8,18 +8,18 @@ import { List, Item } from '../components/ProjectsList'
 import { Project } from '../apis/types'
 
 export default function Home(): JSX.Element {
-  // Set page title
-  const setPageInfo = usePageInfo()
-  React.useEffect(() => {
-    setPageInfo({ name: 'Projects' })
-  })
-
   // Get static text translation
   const { t } = useTranslation()
 
   // Get lang and data loading state
   const lang: 'ru' | 'en' = useAppSelector(state => state.settings.lang)
   const isReady: boolean = useAppSelector(state => state.data.loaded)
+
+  // Set page title
+  const setPageInfo = usePageInfo()
+  React.useEffect(() => {
+    setPageInfo({ name: lang === 'en' ? 'Projects' : 'Проекты', page: 'home' })
+  }, [lang])
 
   // Get query selector
   const query = useQuery()

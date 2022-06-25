@@ -2,9 +2,16 @@ import { Base64 } from 'js-base64'
 import { ProjectDescriptions } from './types'
 const GIT_API_URL = 'https://api.github.com'
 const USER = 'crawraps'
+const FETCH_OPTIONS = {
+  method: 'GET',
+  headers: {
+    'User-Agent': USER,
+    Authorization: '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',
+  },
+}
 
 export async function fetchRepo(gitUrl: string) {
-  return fetch(GIT_API_URL + '/repos' + gitUrl.split('.com')[1])
+  return fetch(GIT_API_URL + '/repos' + gitUrl.split('.com')[1], FETCH_OPTIONS)
     .then(res => res.json())
     .then(res => ({
       created: res.created_at,
@@ -16,7 +23,7 @@ export async function fetchRepo(gitUrl: string) {
 }
 
 export async function fetchDescription(gitUrl: string, name: keyof ProjectDescriptions) {
-  return fetch(`${GIT_API_URL}/repos${gitUrl.split('.com')[1]}/contents/descriptions/${name}.md`)
+  return fetch(`${GIT_API_URL}/repos${gitUrl.split('.com')[1]}/contents/descriptions/${name}.md`, FETCH_OPTIONS)
     .then(res => res.json())
     .then(res => Base64.decode(res.content))
     .catch(err => console.error(`Error while fetching description file: ${err}`))

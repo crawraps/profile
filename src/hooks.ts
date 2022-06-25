@@ -5,6 +5,7 @@ import { AppDispatch, RootState } from './store'
 
 export type PageInfo = {
   name: string
+  page: 'home' | 'about' | 'project'
 }
 
 // Custom hook to access page information

@@ -3,7 +3,7 @@ import { getFirestore, getDocs, collection, getDoc, doc } from 'firebase/firesto
 import app from '.'
 import { AboutText, Project, Tag } from './types'
 import { fetchDescription, fetchRepo } from './git'
-
+import _ from 'lodash'
 const db = getFirestore(app)
 
 export async function fetchProjects(dispatch: AppDispatch, getState: () => RootState) {
@@ -44,21 +44,17 @@ export async function fetchProjects(dispatch: AppDispatch, getState: () => RootS
   }
 }
 
-export async function addDescription(
-  dispatch: AppDispatch,
-  getState: () => RootState,
-  lang: 'en' | 'ru',
-  project: Project
-) {
-  const projects: Project[] = getState().data.projects
+export async function addDescription(dispatch: AppDispatch, getState: () => RootState, project: Project | null) {
+  const projects: Project[] = _.cloneDeep(getState().data.projects)
+  const lang = getState().settings.lang
 
   const newProjects = await Promise.all(
     projects.map(async pr => {
-      if (project.id === pr.id) {
-        if (lang === 'en') {
+      if (project?.id === pr.id) {
+        if (lang === 'en' && !pr.descriptions.fullEng) {
           const description = await fetchDescription(pr.links.git, 'fullEng')
           pr.descriptions.fullEng = description ?? 'Error while getting description'
-        } else {
+        } else if (lang === 'ru' && !pr.descriptions.fullRu) {
           const description = await fetchDescription(pr.links.git, 'fullRu')
           pr.descriptions.fullRu = description ?? 'Ошибка при чтении описания'
         }
