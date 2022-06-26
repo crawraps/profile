@@ -1,3 +1,4 @@
+import { Project } from './apis/types'
 import { useMemo } from 'react'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { useLocation, useOutletContext } from 'react-router-dom'
@@ -6,6 +7,7 @@ import { AppDispatch, RootState } from './store'
 export type PageInfo = {
   name: string
   page: 'home' | 'about' | 'project'
+  project?: Project
 }
 
 // Custom hook to access page information

@@ -9,7 +9,7 @@ interface Props {
   type: 'tag' | 'link'
 }
 
-export default function TagElement({ tagName, type }: Props): JSX.Element {
+export default function TagElement({ tagName, type, ...props }: Props): JSX.Element {
   const query = useQuery()
   const location = useLocation()
   const [target, setTarget] = React.useState<string>('')
@@ -53,6 +53,7 @@ export default function TagElement({ tagName, type }: Props): JSX.Element {
     color: tag?.color,
     initialtags: initialTags,
     name: tagName,
+    props,
   }
 
   return type === 'tag' ? (

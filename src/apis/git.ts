@@ -14,9 +14,9 @@ export async function fetchRepo(gitUrl: string) {
   return fetch(GIT_API_URL + '/repos' + gitUrl.split('.com')[1], FETCH_OPTIONS)
     .then(res => res.json())
     .then(res => ({
-      created: res.created_at,
-      updated: res.updated_at,
-      pushed: res.pushed_at,
+      created: new Date(res.created_at),
+      updated: new Date(res.updated_at),
+      pushed: new Date(res.pushed_at),
       contents: res.contents_url,
     }))
     .catch(err => console.error(`Error while fetching repo: ${err}`))

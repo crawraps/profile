@@ -7,7 +7,7 @@ import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components'
 import { addDescription } from '../apis/database'
 import Loader from '../components/Loader'
-import { Col, Container, Row } from 'react-bootstrap'
+import TagElement from '../components/Tag'
 
 export default function Project(): JSX.Element {
   // Get all projects
@@ -34,7 +34,7 @@ export default function Project(): JSX.Element {
   const setPageInfo = usePageInfo()
   React.useEffect(() => {
     let name = (lang === 'en' ? project?.nameEN : project?.nameRU) ?? 'Project'
-    setPageInfo({ name: name.charAt(0).toUpperCase() + name.slice(1), page: 'project' })
+    setPageInfo({ name: name.charAt(0).toUpperCase() + name.slice(1), page: 'project', project: project ?? undefined })
   }, [project])
 
   // Set default content
@@ -55,12 +55,87 @@ export default function Project(): JSX.Element {
     }
   }, [lang, project?.descriptions.fullEng, project?.descriptions.fullRu])
 
-  return Content
+  return (
+    <>
+      <Title>{(lang === 'ru' ? project?.nameRU : project?.nameEN) ?? 'Project'}</Title>
+      <DateTimeContainer>
+        <DateTime>
+          <Icon></Icon>
+          {`Created: ${project?.created?.toString().split(' ').splice(0, 3).join(' ') ?? 'Loading...'}`}
+        </DateTime>
+        <Delimeter>|</Delimeter>
+        <DateTime>
+          <Icon></Icon>
+          {`Updated: ${project?.updated?.toString().split(' ').splice(0, 3).join(' ') ?? 'Loading...'}`}
+        </DateTime>
+        <Delimeter>|</Delimeter>
+        <DateTime>
+          <Icon></Icon>
+          {`Pushed: ${project?.pushed?.toString().split(' ').splice(0, 3).join(' ') ?? 'Loading...'}`}
+        </DateTime>
+      </DateTimeContainer>
+      <TagContainer>
+        <TagsTitle>
+          <Icon></Icon>
+          Tags:
+        </TagsTitle>
+        {project?.tags.map(tag => (
+          <TagElement tagName={tag} type='tag' />
+        ))}
+      </TagContainer>
+      {Content}
+    </>
+  )
 }
-const StyledContainer = styled(Container)`
-  background-color: transparent;
-  min-height: 100vh;
-  transition: background-color 0.2s ease-in;
+
+const Delimeter = styled.span`
+  margin: 0 20px;
+  font-size: 16px;
+  color: gray;
+
+  @media screen and (max-width: 960px) {
+    display: none;
+  }
+`
+const TagContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-size: 16px;
+  color: gray;
+  align-items: center;
+  margin-top: 0.2em;
+  margin-bottom: 35px;
+`
+const DateTimeContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+
+  @media screen and (max-width: 960px) {
+    flex-direction: column;
+  }
+`
+const DateTime = styled.span`
+  font-size: 16px;
+  color: gray;
+
+  @media screen and (max-width: 960px) {
+    margin: 4px 0;
+  }
+`
+const TagsTitle = styled.span`
+  font-size: 16px;
+  color: gray;
+  margin-right: 0.6em;
+  margin-bottom: 4px;
+`
+const Icon = styled.span`
+  margin-right: 0.6em;
+`
+const Title = styled.h1`
+  font-size: 48px;
+  color: ${props => props.theme.text};
+  font-family: Montserrat;
+  margin-bottom: 15px;
 `
 const Markdown = styled(ReactMarkdown)`
   margin: 0 auto;

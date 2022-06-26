@@ -3,15 +3,14 @@ export type Project = {
   nameEN: string
   nameRU: string
   mainImage: string
-  images: string[]
   links: {
     [key: string]: string
   }
   tags: string[]
   favoriteIndex: number
-  updated: string
-  created: string
-  pushed: string
+  updated?: Date
+  created?: Date
+  pushed?: Date
   descriptions: ProjectDescriptions
 }
 

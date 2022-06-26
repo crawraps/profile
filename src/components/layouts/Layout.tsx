@@ -49,8 +49,8 @@ export default function Layout(): JSX.Element {
         page={pageInfo?.page ?? 'home'}
         firstColor={theme.background}
         secondColor={theme.primary}
-        src='https://images.unsplash.com/photo-1644676748681-7e1d7ab29d1f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1476&q=80'
-        alt='alt'
+        src={pageInfo?.project?.mainImage ?? ''}
+        alt='Project image'
       />
 
       <MenuButton

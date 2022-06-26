@@ -76,10 +76,6 @@ function parseText(text: string, tags: string[]): JSX.Element[] {
   })
 }
 
-const StyledContainer = styled(Container)`
-  min-height: 100vh;
-  transition: background-color 0.2s ease-in;
-`
 const Title = styled.h1`
   font-size: 48px;
   color: ${props => props.theme.text};
