@@ -49,24 +49,9 @@ export default function Home(): JSX.Element {
     setPlaceholder(isReady ? <Nothing>{t('nothing-text')}</Nothing> : <Loader style={{ marginTop: 200 }} dots={5} />)
   }, [isReady, lang])
 
-  return (
-    <StyledContainer fluid>
-      <Row>
-        <Col sm={2} lg={3}></Col>
-        <Col sm={8} lg={6}>
-          <List title={t('list-title')}>{items?.length ? items : placeholder}</List>
-        </Col>
-        <Col sm={2} lg={3}></Col>
-      </Row>
-    </StyledContainer>
-  )
+  return <List title={t('list-title')}>{items?.length ? items : placeholder}</List>
 }
 
-const StyledContainer = styled(Container)`
-  background-color: transparent;
-  min-height: 100vh;
-  transition: background-color 0.2s ease-in;
-`
 const Nothing = styled.h3`
   width: 100%;
   text-align: center;

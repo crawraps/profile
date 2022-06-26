@@ -50,16 +50,10 @@ export default function About(): JSX.Element {
   }, [tagNames, plainText])
 
   return (
-    <StyledContainer fluid>
-      <Row>
-        <Col sm={2} lg={3}></Col>
-        <Col sm={8} lg={6}>
-          <Title>{plainText ? t('about-title') : null}</Title>
-          {resultText}
-        </Col>
-        <Col sm={2} lg={3}></Col>
-      </Row>
-    </StyledContainer>
+    <>
+      <Title>{plainText ? t('about-title') : null}</Title>
+      {resultText}
+    </>
   )
 }
 

@@ -55,17 +55,7 @@ export default function Project(): JSX.Element {
     }
   }, [lang, project?.descriptions.fullEng, project?.descriptions.fullRu])
 
-  return (
-    <StyledContainer fluid>
-      <Row>
-        <Col sm={2} lg={3}></Col>
-        <Col sm={8} lg={6}>
-          {Content}
-        </Col>
-        <Col sm={2} lg={3}></Col>
-      </Row>
-    </StyledContainer>
-  )
+  return Content
 }
 const StyledContainer = styled(Container)`
   background-color: transparent;

@@ -1,6 +1,5 @@
-import { AnimatePresence, motion, Transition, Variants } from 'framer-motion'
 import React from 'react'
-import { Image } from 'react-bootstrap'
+import { Col, Row, Container } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { Link, Outlet } from 'react-router-dom'
@@ -8,10 +7,10 @@ import styled, { useTheme } from 'styled-components'
 import { Tag } from '../../apis/types'
 import { PageInfo, useAppDispatch, useAppSelector } from '../../hooks'
 import { setLang, setNavbar, setTheme } from '../../store/settingsReducer'
+import Header, { HeaderProps } from '../Header'
 import MenuButton from '../MenuButton'
 import Navbar from '../Navbar'
 import NavbarBlock from '../NavbarBlock'
-import PatternBackground from '../PatternBackround'
 import TagElement from '../Tag'
 import TagsContainer from '../TagsContainer'
 
@@ -41,7 +40,7 @@ export default function Layout(): JSX.Element {
   }
 
   return (
-    <Container>
+    <MainContainer>
       <Helmet>
         <title>{`${pageInfo?.name} | Crawraps`}</title>
       </Helmet>
@@ -99,83 +98,26 @@ export default function Layout(): JSX.Element {
       </TagsContainer>
 
       <Content page={pageInfo?.page ?? 'home'}>
-        <Outlet context={setPageInfo} />
+        <StyledContainer fluid>
+          <Row>
+            <Col sm={1} md={2} xl={3}></Col>
+            <Col sm={10} md={8} xl={6}>
+              <Outlet context={setPageInfo} />
+            </Col>
+            <Col sm={1} md={2} xl={3}></Col>
+          </Row>
+        </StyledContainer>
       </Content>
-    </Container>
+    </MainContainer>
   )
 }
 
-interface HeaderProps {
-  page: 'project' | 'home' | 'about'
-  firstColor: string
-  secondColor: string
-  src: string
-  alt: string
-  [key: string]: string
-}
-
-const Header = React.memo(function Header({
-  page,
-  firstColor,
-  secondColor,
-  src,
-  alt,
-  ...props
-}: HeaderProps): JSX.Element {
-  page === 'project' ? (
-    <img src={src} alt={alt} {...props} />
-  ) : (
-    <PatternBackground firstColor={firstColor} secondColor={secondColor} {...props} />
-  )
-
-  const variants: Variants = {
-    hidden: {
-      opacity: 0,
-      top: '-100%',
-    },
-    visible: {
-      opacity: 1,
-      top: '0%',
-      transition: { delay: 0.2, ease: 'linear', duration: 0.2 },
-    },
-  }
-
-  const transition: Transition = {
-    ease: 'linear',
-    duration: 0.2,
-  }
-
-  return (
-    <AnimatePresence>
-      {page === 'project' ? (
-        <motion.img
-          src={src}
-          alt={alt}
-          animate='visible'
-          exit='hidden'
-          initial='hidden'
-          variants={variants}
-          transition={transition}
-          key={page}
-          {...props}
-        />
-      ) : (
-        <PatternBackground
-          firstColor={firstColor}
-          secondColor={secondColor}
-          animate='visible'
-          exit='hidden'
-          initial='hidden'
-          variants={variants}
-          transition={transition}
-          {...props}
-        />
-      )}
-    </AnimatePresence>
-  )
-})
-
-const Container = styled.div`
+const StyledContainer = styled(Container)`
+  background-color: transparent;
+  min-height: 100vh;
+  transition: background-color 0.2s ease-in;
+`
+const MainContainer = styled.div`
   background-color: ${props => props.theme.background};
   overflow: hidden;
   min-height: 101vh;
@@ -190,7 +132,7 @@ const StylizedHeader = styled(Header)<HeaderProps>`
   transition: max-height 0.2s ease-in;
 
   @media screen and (max-width: 767px) {
-    height: 0px;
+    max-height: ${props => (props.page === 'project' ? '200px' : '0px')};
   }
 `
 const Content = styled.div<ContentProps>`
