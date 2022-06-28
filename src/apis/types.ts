@@ -26,8 +26,3 @@ export type Tag = {
   link: string
   color: string
 }
-
-export interface AboutText {
-  textRU: string
-  textEN: string
-}

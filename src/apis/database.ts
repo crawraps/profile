@@ -1,7 +1,7 @@
 import { AppDispatch, RootState } from '../store/index'
 import { getFirestore, getDocs, collection, getDoc, doc } from 'firebase/firestore'
 import app from '.'
-import { AboutText, Project, Tag } from './types'
+import { Project, Tag } from './types'
 import { fetchDescription, fetchRepo } from './git'
 import _ from 'lodash'
 const db = getFirestore(app)
@@ -100,21 +100,4 @@ export async function fetchTags(dispatch: AppDispatch, getState: () => RootState
   if (getState().data.projects.length !== 0) {
     dispatch({ type: 'setLoaded', value: true })
   }
-}
-
-// Fetch about text
-export async function fetchAboutText(dispatch: AppDispatch, getState: () => RootState) {
-  const aboutText: AboutText = Object.assign({}, getState().data.aboutText)
-  const lang = getState().settings.lang
-  const text = await getDoc(doc(db, 'about', lang === 'en' ? 'textEN' : 'textRU'))
-    .then(res => res.data()?.text as string)
-    .catch(err => console.log(`An error occurred while fetching aboutTextRu ${err}`))
-
-  if (lang === 'en') {
-    aboutText.textEN = text ?? 'Apparently I have not added about me text'
-  } else {
-    aboutText.textRU = text ?? 'Похоже, что я не добавил текст о себе'
-  }
-
-  dispatch({ type: 'addAboutText', value: aboutText })
 }

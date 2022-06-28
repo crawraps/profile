@@ -1,7 +1,7 @@
 import { dataReducer } from './dataReducer'
 import { setLang, setTheme, settingsReducer } from './settingsReducer'
 import { configureStore } from '@reduxjs/toolkit'
-import { addDescriptions, fetchAboutText, fetchProjects, fetchTags } from '../apis/database'
+import { addDescriptions, fetchProjects, fetchTags } from '../apis/database'
 import i18next from 'i18next'
 
 export const store = configureStore({

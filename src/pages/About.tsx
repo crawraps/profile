@@ -1,18 +1,16 @@
 import React from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import Loader from '../components/Loader'
 import TagElement from '../components/Tag'
 import { Tag } from '../apis/types'
-import { useAppDispatch, useAppSelector, usePageInfo } from '../hooks'
-import { fetchAboutText } from '../apis/database'
+import { useAppSelector, usePageInfo } from '../hooks'
+import ReactMarkdown from 'react-markdown'
 
 export default function About(): JSX.Element {
   const [plainText, setPlainText] = React.useState<string | null>(null)
   const [tagNames, setTagNames] = React.useState<string[]>([])
   const state = useAppSelector(state => state)
-  const dispatch = useAppDispatch()
 
   // Set page title
   const setPageInfo = usePageInfo()
@@ -23,18 +21,17 @@ export default function About(): JSX.Element {
   // Translate static text
   const { t } = useTranslation()
 
-  // Fetch about text on first visit
-  React.useEffect(() => {
-    // Check if about text doesn't exist in the store
-    if (!state.data.aboutText['text' + state.settings.lang.toUpperCase()]) {
-      dispatch(fetchAboutText)
+  // Get markdown text
+  const [mdText, setMdText] = React.useState<string>('')
+  React.useMemo(() => {
+    let promise = new Promise(() => {})
+    if (state.settings.lang === 'ru') {
+      promise = fetch(require('../assets/aboutRu.md'))
+    } else {
+      promise = fetch(require('../assets/aboutEn.md'))
     }
-  })
-
-  // Get current text by language
-  React.useEffect(() => {
-    setPlainText(state.settings.lang === 'en' ? state.data.aboutText.textEN : state.data.aboutText.textRU)
-  }, [state.settings.lang, state.data.aboutText])
+    promise.then((res: any) => res.text()).then(res => setMdText(res))
+  }, [state.settings.lang])
 
   // Get tags
   React.useEffect(() => {
@@ -52,7 +49,7 @@ export default function About(): JSX.Element {
   return (
     <>
       <Title>{plainText ? t('about-title') : null}</Title>
-      {resultText}
+      <Markdown>{mdText}</Markdown>
     </>
   )
 }
@@ -91,4 +88,13 @@ const Paragraph = styled.p`
   font-size: 16px;
   line-height: 1.7em;
   letter-spacing: 0.2px;
+`
+const Markdown = styled(ReactMarkdown)`
+  color: ${props => props.theme.opacityText};
+
+  h1,
+  h2,
+  h3 {
+    color: ${props => props.theme.text};
+  }
 `
