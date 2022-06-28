@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { addDescription } from '../apis/database'
 import Loader from '../components/Loader'
 import TagElement from '../components/Tag'
+import { useTranslation } from 'react-i18next'
 
 export default function Project(): JSX.Element {
   // Get all projects
@@ -15,6 +16,9 @@ export default function Project(): JSX.Element {
 
   // Get current lang
   const lang = useAppSelector(state => state.settings.lang)
+
+  // Get locale
+  const { t } = useTranslation()
 
   // Get current project by id
   const location = useLocation()
@@ -25,10 +29,10 @@ export default function Project(): JSX.Element {
   }, [location, projects])
 
   // Parse and add description to storage
-  const dispatch = useAppDispatch()
-  React.useEffect(() => {
-    dispatch((dispatch: AppDispatch, getState: () => RootState) => addDescription(dispatch, getState, project))
-  }, [lang])
+  // const dispatch = useAppDispatch()
+  // React.useMemo(() => {
+  //   dispatch((dispatch: AppDispatch, getState: () => RootState) => addDescription(dispatch, getState, project))
+  // }, [lang])
 
   // Set page title
   const setPageInfo = usePageInfo()
@@ -58,36 +62,72 @@ export default function Project(): JSX.Element {
   return (
     <>
       <Title>{(lang === 'ru' ? project?.nameRU : project?.nameEN) ?? 'Project'}</Title>
-      <DateTimeContainer>
-        <DateTime>
-          <Icon></Icon>
-          {`Created: ${project?.created?.toString().split(' ').splice(0, 3).join(' ') ?? 'Loading...'}`}
-        </DateTime>
-        <Delimeter>|</Delimeter>
-        <DateTime>
-          <Icon></Icon>
-          {`Updated: ${project?.updated?.toString().split(' ').splice(0, 3).join(' ') ?? 'Loading...'}`}
-        </DateTime>
-        <Delimeter>|</Delimeter>
-        <DateTime>
-          <Icon></Icon>
-          {`Pushed: ${project?.pushed?.toString().split(' ').splice(0, 3).join(' ') ?? 'Loading...'}`}
-        </DateTime>
-      </DateTimeContainer>
-      <TagContainer>
-        <TagsTitle>
-          <Icon></Icon>
-          Tags:
-        </TagsTitle>
-        {project?.tags.map(tag => (
-          <TagElement tagName={tag} type='tag' />
-        ))}
-      </TagContainer>
+      <InfoContainer>
+        <DateTimeContainer>
+          <DateTime>
+            <Icon></Icon>
+            {`${t('project-created')}: ${
+              project?.created?.toString().split(' ').splice(0, 3).join(' ') ?? 'Loading...'
+            }`}
+          </DateTime>
+          <Delimeter>|</Delimeter>
+          <DateTime>
+            <Icon></Icon>
+            {`${t('project-updated')}: ${
+              project?.updated?.toString().split(' ').splice(0, 3).join(' ') ?? 'Loading...'
+            }`}
+          </DateTime>
+          <Delimeter>|</Delimeter>
+          <DateTime>
+            <Icon></Icon>
+            {`${t('project-pushed')}: ${project?.pushed?.toString().split(' ').splice(0, 3).join(' ') ?? 'Loading...'}`}
+          </DateTime>
+        </DateTimeContainer>
+        <LinksContainer>
+          <Link>
+            <Icon></Icon>
+            {project?.links.git.slice(19)}
+          </Link>
+        </LinksContainer>
+        <TagContainer>
+          <TagsTitle>
+            <Icon></Icon>
+            {t('project-tags')}:
+          </TagsTitle>
+          {project?.tags.map(tag => (
+            <TagElement tagName={tag} type='tag' key={`project-tag-${tag}`} />
+          ))}
+        </TagContainer>
+      </InfoContainer>
       {Content}
     </>
   )
 }
 
+const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 20px;
+
+  & > div {
+    margin: 2px 0;
+  }
+`
+const LinksContainer = styled.div`
+  display: flex;
+  width: 100%;
+`
+const Link = styled.a`
+  font-size: 16px;
+  color: gray;
+  text-decoration: none;
+
+  &:hover {
+    color: ${props => props.theme.primary};
+    cursor: pointer;
+  }
+`
 const Delimeter = styled.span`
   margin: 0 20px;
   font-size: 16px;
@@ -103,8 +143,6 @@ const TagContainer = styled.div`
   font-size: 16px;
   color: gray;
   align-items: center;
-  margin-top: 0.2em;
-  margin-bottom: 35px;
 `
 const DateTimeContainer = styled.div`
   display: flex;

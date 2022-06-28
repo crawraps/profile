@@ -15,5 +15,9 @@
   "nameLast": "Я-А",
   "updateFirst": "Обновлено недавно",
   "updateLast": "Обновлено давно",
-  "nothing-text": "Видимо здесь ничего нет. Попробуйте выбрать другие теги."
+  "nothing-text": "Видимо здесь ничего нет. Попробуйте выбрать другие теги.",
+  "project-created": "Создано",
+  "project-pushed": "Загружено",
+  "project-updated": "Обновлено",
+  "project-tags": "Теги"
 }

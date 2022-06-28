@@ -15,5 +15,9 @@
   "nameLast": "Alphabet backward",
   "updateFirst": "Update recently first",
   "updateLast": "Update recently last",
-  "nothing-text": "Sorry, nothing is here. Maybe you should choose other tags."
+  "nothing-text": "Sorry, nothing is here. Maybe you should choose other tags.",
+  "project-created": "Created",
+  "project-pushed": "Pushed",
+  "project-updated": "Updated",
+  "project-tags": "Tags"
 }

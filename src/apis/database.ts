@@ -28,6 +28,7 @@ export async function fetchProjects(dispatch: AppDispatch, getState: () => RootS
         updated: repo?.updated,
         pushed: repo?.pushed,
         descriptions: {
+          ...project.descriptions,
           shortEng:
             (await fetchDescription(project.links.git, 'shortEng')) ?? 'Error occurred while getting description',
           shortRu: (await fetchDescription(project.links.git, 'shortRu')) ?? 'Возникла ошибка при чтении описания',
@@ -61,6 +62,21 @@ export async function addDescription(dispatch: AppDispatch, getState: () => Root
       }
 
       return pr
+    })
+  )
+
+  dispatch({ type: 'addProjects', value: newProjects })
+}
+
+export async function addDescriptions(dispatch: AppDispatch, getState: () => RootState) {
+  const projects: Project[] = _.cloneDeep(getState().data.projects)
+
+  const newProjects = await Promise.all(
+    projects.map(async pr => {
+      const descriptionEn = (await fetchDescription(pr.links.git, 'fullEng')) ?? ''
+      const descriptionRu = (await fetchDescription(pr.links.git, 'fullRu')) ?? ''
+
+      return { ...pr, descriptions: { ...pr.descriptions, fullEng: descriptionEn, fullRu: descriptionRu } }
     })
   )
 

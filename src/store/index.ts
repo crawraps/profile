@@ -1,7 +1,7 @@
 import { dataReducer } from './dataReducer'
 import { setLang, setTheme, settingsReducer } from './settingsReducer'
 import { configureStore } from '@reduxjs/toolkit'
-import { fetchAboutText, fetchProjects, fetchTags } from '../apis/database'
+import { addDescriptions, fetchAboutText, fetchProjects, fetchTags } from '../apis/database'
 import i18next from 'i18next'
 
 export const store = configureStore({
@@ -12,8 +12,8 @@ export const store = configureStore({
 // Setup storae
 export function setupStore() {
   // Fetch database
-  store.dispatch(fetchProjects)
   store.dispatch(fetchTags)
+  store.dispatch(fetchProjectsWithDescriptions)
 
   // Set language and theme by user preferences
   store.dispatch(setLang((localStorage.getItem('lang') ?? i18next.language.split('-')[0]) as 'en' | 'ru'))
@@ -27,6 +27,10 @@ export function setupStore() {
       store.dispatch(setTheme('dark'))
     }
   }
+}
+
+export function fetchProjectsWithDescriptions(dispatch: AppDispatch, getState: () => RootState) {
+  fetchProjects(dispatch, getState).then(() => addDescriptions(dispatch, getState))
 }
 
 // Define store types
