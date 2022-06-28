@@ -7,6 +7,7 @@ import styled, { useTheme } from 'styled-components'
 import { Tag } from '../../apis/types'
 import { PageInfo, useAppDispatch, useAppSelector } from '../../hooks'
 import { setLang, setNavbar, setTheme } from '../../store/settingsReducer'
+import Contacts from '../Contacts'
 import Header, { HeaderProps } from '../Header'
 import MenuButton from '../MenuButton'
 import Navbar from '../Navbar'
@@ -101,6 +102,8 @@ export default function Layout(): JSX.Element {
           <TagElement type='tag' tagName={tag.name} key={'container-' + tag.name} />
         )) || null}
       </TagsContainer>
+
+      <Contacts isOpen={state.settings.navbar === 'visible' && pageInfo?.page === 'about'} />
 
       <Content page={pageInfo?.page ?? 'home'}>
         <StyledContainer fluid>

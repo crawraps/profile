@@ -2,17 +2,12 @@ import React from 'react'
 import { motion, useAnimation } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { useQuery } from '../hooks'
 
 interface Props {
-  children: JSX.Element[] | null
   isOpen: boolean
 }
 
-export default function TagsContainer({ children, isOpen }: Props): JSX.Element {
-  const query = useQuery()
-
+export default function COntacts({ isOpen }: Props): JSX.Element {
   // Get static text
   const { t } = useTranslation()
 
@@ -21,8 +16,8 @@ export default function TagsContainer({ children, isOpen }: Props): JSX.Element 
 
   React.useEffect(() => {
     controls.start(() => ({
-      opacity: isOpen ? 1 : 0,
       right: isOpen ? 20 : -320,
+      opacity: isOpen ? 1 : 0,
       transition: {
         ease: 'easeOut',
         duration: 0.2,
@@ -38,10 +33,19 @@ export default function TagsContainer({ children, isOpen }: Props): JSX.Element 
       }}
     >
       <TitleContainer>
-        <Title>{t('tags-title')}</Title>
-        <ClearButton to={'/' + (query.has('sort') ? '?sort=' + query.get('sort') : '')}>{t('tags-button')}</ClearButton>
+        <Title>{t('contacts-title')}</Title>
       </TitleContainer>
-      <Content>{children}</Content>
+      <Content>
+        <Link target='_blank' href='https://github.com/crawraps'>
+          <Icon></Icon>github.com/crawraps
+        </Link>
+        <Link target='_blank' href='https://t.me/crawraps'>
+          <Icon></Icon>t.me/crawraps
+        </Link>
+        <Link target='_blank' href='mailto: crawraps@gmail.com'>
+          <Icon>@</Icon>crawraps@gmail.com
+        </Link>
+      </Content>
     </Container>
   )
 }
@@ -50,7 +54,6 @@ const Container = styled(motion.div)`
   position: fixed;
   z-index: 5;
   bottom: 20px;
-  width: 300px;
   display: flex;
   flex-direction: column;
   padding: 15px 10px 8px;
@@ -65,6 +68,23 @@ const Container = styled(motion.div)`
     box-shadow: ${props => props.theme.elevation[1].shadow};
     background-color: ${props => props.theme.elevation[1].color};
   }
+`
+const Link = styled.a`
+  font-size: 14px;
+  color: ${props => props.theme.text};
+  text-decoration: none;
+  margin: 0 2px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &:hover {
+    color: ${props => props.theme.primary};
+  }
+`
+const Icon = styled.span`
+  font-size: 32px;
+  margin: 0 8px;
 `
 const TitleContainer = styled.div`
   width: 100%;
@@ -83,22 +103,10 @@ const Title = styled.h3`
   font-family: Montserrat;
   transition: 0.2s ease-in;
 `
-const ClearButton = styled(Link)`
-  text-decoration: none;
-  color: ${props => props.theme.text};
-  opacity: 0.6;
-  font-size: 16px;
-  font-family: Roboto;
-  transition: 0.2s ease-in;
-
-  &:hover {
-    color: ${props => props.theme.text};
-    text-decoration: underline;
-    opacity: 0.8;
-  }
-`
 const Content = styled.div`
   width: 100%;
   margin: 6px 0px 0px 0px;
   padding: 0px 6px;
+  display: flex;
+  flex-direction: column;
 `
