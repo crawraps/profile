@@ -37,7 +37,13 @@ export function Item({ project }: ItemProps): JSX.Element {
     <ItemLink to={`project/${project.id}`}>
       <ItemImage src={project.mainImage} height={350} loading='lazy' />
       <ItemInfo>
-        <ItemLabel>{lang === 'en' ? project.nameEN : project.nameRU}</ItemLabel>
+        <ItemLabelContainer>
+          <ItemLabel>{lang === 'en' ? project.nameEN : project.nameRU}</ItemLabel>
+          <DateTime>
+            <Icon></Icon>
+            {project?.pushed?.toString().split(' ').splice(0, 4).join(' ') ?? 'Loading...'}
+          </DateTime>
+        </ItemLabelContainer>
         <ItemTags>
           {project.tags.map(tagId => (
             <TagElement type='tag' tagId={tagId} key={`project-list-tag-${tagId}`} />
@@ -52,6 +58,19 @@ export function Item({ project }: ItemProps): JSX.Element {
 }
 
 // Styled components
+const Icon = styled.span`
+  margin-right: 0.4em;
+`
+const ItemLabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+const DateTime = styled.span`
+  display: block;
+  color: gray;
+  font-size: 16px;
+`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -111,6 +130,8 @@ const ItemLabel = styled.h2`
   width: 100%;
   margin: 6px 0px 10px 0px;
   transition: all 0.1s ease-in;
+  width: fit-content;
+  margin-right: 2em;
 
   &::first-letter {
     text-transform: uppercase;
