@@ -9,6 +9,9 @@ import { addDescription } from '../apis/database'
 import Loader from '../components/Loader'
 import TagElement from '../components/Tag'
 import { useTranslation } from 'react-i18next'
+import ClockIcon from '../assets/icons/Clock'
+import GithubIcon from '../assets/icons/Github'
+import TagsIcon from '../assets/icons/Tags'
 
 export default function Project(): JSX.Element {
   // Get all projects
@@ -65,35 +68,33 @@ export default function Project(): JSX.Element {
       <InfoContainer>
         <DateTimeContainer>
           <DateTime>
-            <Icon></Icon>
+            <ClockIcon size={20} />
             {`${t('project-created')}: ${
-              project?.created?.toString().split(' ').splice(0, 3).join(' ') ?? 'Loading...'
+              project?.created?.toString().split(' ').splice(0, 4).join(' ') ?? 'Loading...'
             }`}
           </DateTime>
           <Delimeter>|</Delimeter>
           <DateTime>
-            <Icon></Icon>
+            <ClockIcon size={20} />
             {`${t('project-updated')}: ${
-              project?.updated?.toString().split(' ').splice(0, 3).join(' ') ?? 'Loading...'
+              project?.updated?.toString().split(' ').splice(0, 4).join(' ') ?? 'Loading...'
             }`}
           </DateTime>
           <Delimeter>|</Delimeter>
           <DateTime>
-            <Icon></Icon>
-            {`${t('project-pushed')}: ${project?.pushed?.toString().split(' ').splice(0, 3).join(' ') ?? 'Loading...'}`}
+            <ClockIcon size={20} />
+            {`${t('project-pushed')}: ${project?.pushed?.toString().split(' ').splice(0, 4).join(' ') ?? 'Loading...'}`}
           </DateTime>
         </DateTimeContainer>
         <LinksContainer>
           <Link>
-            <Icon></Icon>
+            <GithubIcon size={20} />
             {project?.links.git.slice(19)}
           </Link>
         </LinksContainer>
         <TagContainer>
-          <TagsTitle>
-            <Icon></Icon>
-            {t('project-tags')}:
-          </TagsTitle>
+          <TagsIcon size={20} />
+          <TagsTitle>{t('project-tags')}:</TagsTitle>
           {project?.tags.map(tag => (
             <TagElement tagId={tag} type='tag' key={`project-tag-${tag}`} />
           ))}
@@ -109,6 +110,7 @@ const InfoContainer = styled.div`
   flex-direction: column;
   width: 100%;
   margin-bottom: 20px;
+  fill: gray;
 
   & > div {
     margin: 2px 0;
@@ -155,6 +157,8 @@ const DateTimeContainer = styled.div`
 const DateTime = styled.span`
   font-size: 16px;
   color: gray;
+  display: flex;
+  align-items: center;
 
   @media screen and (max-width: 960px) {
     margin: 4px 0;

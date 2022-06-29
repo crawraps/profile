@@ -2,6 +2,9 @@ import React from 'react'
 import { motion, useAnimation } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import GithubIcon from '../assets/icons/Github'
+import TelegramIcon from '../assets/icons/Telegram'
+import EmailIcon from '../assets/icons/Email'
 
 interface Props {
   isOpen: boolean
@@ -37,13 +40,16 @@ export default function COntacts({ isOpen }: Props): JSX.Element {
       </TitleContainer>
       <Content>
         <Link target='_blank' href='https://github.com/crawraps'>
-          <Icon></Icon>github.com/crawraps
+          <GithubIcon size={28} />
+          github.com/crawraps
         </Link>
         <Link target='_blank' href='https://t.me/crawraps'>
-          <Icon></Icon>t.me/crawraps
+          <TelegramIcon size={28} />
+          t.me/crawraps
         </Link>
         <Link target='_blank' href='mailto: crawraps@gmail.com'>
-          <Icon>@</Icon>crawraps@gmail.com
+          <EmailIcon size={28} />
+          crawraps@gmail.com
         </Link>
       </Content>
     </Container>
@@ -73,10 +79,11 @@ const Link = styled.a`
   font-size: 14px;
   color: ${props => props.theme.text};
   text-decoration: none;
-  margin: 0 2px;
+  margin: 2px 2px;
   display: flex;
   flex-direction: row;
   align-items: center;
+  fill: ${props => props.theme.text};
 
   &:hover {
     color: ${props => props.theme.primary};

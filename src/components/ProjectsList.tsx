@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Project } from '../apis/types'
+import ClockIcon from '../assets/icons/Clock'
 import { useAppSelector } from '../hooks'
 import SortButton from './SortButton'
 import TagElement from './Tag'
@@ -40,7 +41,7 @@ export function Item({ project }: ItemProps): JSX.Element {
         <ItemLabelContainer>
           <ItemLabel>{lang === 'en' ? project.nameEN : project.nameRU}</ItemLabel>
           <DateTime>
-            <Icon></Icon>
+            <ClockIcon size={20} />
             {project?.pushed?.toString().split(' ').splice(0, 4).join(' ') ?? 'Loading...'}
           </DateTime>
         </ItemLabelContainer>
@@ -67,9 +68,11 @@ const ItemLabelContainer = styled.div`
   justify-content: space-between;
 `
 const DateTime = styled.span`
-  display: block;
+  display: flex;
+  fill: gray;
   color: gray;
   font-size: 16px;
+  align-items: center;
 `
 const Container = styled.div`
   display: flex;
