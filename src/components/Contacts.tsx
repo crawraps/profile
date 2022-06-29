@@ -83,7 +83,7 @@ const Link = styled.a`
   }
 `
 const Icon = styled.span`
-  font-size: 32px;
+  font-size: 28px;
   margin: 0 8px;
 `
 const TitleContainer = styled.div`
