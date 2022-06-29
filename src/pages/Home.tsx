@@ -41,7 +41,7 @@ export default function Home(): JSX.Element {
         .sort((a, b) => compare(a, b, sortType, lang))
         .map(project => <Item project={project} key={project.id} />)
     )
-  }, [projects, tags, sortType])
+  }, [projects, tags, sortType, lang])
 
   // Get filler placeholder component
   const [placeholder, setPlaceholder] = React.useState<JSX.Element>(<Loader style={{ marginTop: 200 }} dots={5} />)
@@ -79,10 +79,11 @@ function compare(a: Project, b: Project, sortType: string, lang: 'ru' | 'en') {
       } else {
         return a.nameRU < b.nameRU ? 1 : -1
       }
-    case 'updateFirst': //! Create update info
-      return 0
+    case 'updateFirst':
+      console.log(a.created?.getTime(), b.created?.getTime())
+      return (a.created?.getTime() ?? 0) - (b.created?.getTime() ?? 0)
     case 'updateLast':
-      return 0
+      return -((a.created?.getTime() ?? 0) - (b.created?.getTime() ?? 0))
     default:
       return 0
   }
