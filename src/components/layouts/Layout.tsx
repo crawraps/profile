@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { Link, Outlet } from 'react-router-dom'
 import styled, { useTheme } from 'styled-components'
-import { Tag } from '../../apis/types'
+import { Project, Tag } from '../../apis/types'
 import { PageInfo, useAppDispatch, useAppSelector } from '../../hooks'
 import { setLang, setNavbar, setTheme } from '../../store/settingsReducer'
 import Contacts from '../Contacts'
@@ -39,6 +39,21 @@ export default function Layout(): JSX.Element {
       dispatch(setNavbar('hidden'))
     }
   }
+
+  // Calculate tags in tag container
+  const [tags, setTags] = React.useState<Tag[]>()
+  React.useEffect(() => {
+    setTags(
+      state.data.tags.filter((tag: Tag) => {
+        let isExist = false
+        state.data.projects.forEach((project: Project) => {
+          isExist = project.tags.includes(tag.id) || isExist
+        })
+
+        return isExist
+      })
+    )
+  }, [state.data.tags, state.data.projects])
 
   return (
     <MainContainer>
@@ -98,9 +113,7 @@ export default function Layout(): JSX.Element {
       </Navbar>
 
       <TagsContainer isOpen={state.settings.navbar === 'visible' && pageInfo?.page === 'home'}>
-        {state.data.tags.map((tag: Tag) => (
-          <TagElement type='tag' tagName={tag.name} key={'container-' + tag.name} />
-        )) || null}
+        {tags?.map(tag => <TagElement tagId={tag.id} type='tag' key={`tagcontainer-tag-${tag.id}`} />) ?? null}
       </TagsContainer>
 
       <Contacts isOpen={state.settings.navbar === 'visible' && pageInfo?.page === 'about'} />

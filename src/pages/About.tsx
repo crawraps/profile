@@ -1,15 +1,11 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import Loader from '../components/Loader'
 import TagElement from '../components/Tag'
-import { Tag } from '../apis/types'
 import { useAppSelector, usePageInfo } from '../hooks'
 import ReactMarkdown from 'react-markdown'
 
 export default function About(): JSX.Element {
-  const [plainText, setPlainText] = React.useState<string | null>(null)
-  const [tagNames, setTagNames] = React.useState<string[]>([])
   const state = useAppSelector(state => state)
 
   // Set page title
@@ -33,44 +29,14 @@ export default function About(): JSX.Element {
     promise.then((res: any) => res.text()).then(res => setMdText(res))
   }, [state.settings.lang])
 
-  // Get tags
-  React.useEffect(() => {
-    setTagNames(state.data.tags.map((tag: Tag) => tag.name))
-  }, [state.data.tags])
-
-  // Parse plain text
-  const [resultText, setResultText] = React.useState<JSX.Element[] | JSX.Element>(
-    <Loader dots={5} style={{ margin: '300px auto' }} />
-  )
-  React.useEffect(() => {
-    if (plainText) setResultText(parseText(plainText, tagNames))
-  }, [tagNames, plainText])
-
   return (
     <>
-      <Title>{plainText ? t('about-title') : null}</Title>
-      <Markdown>{mdText}</Markdown>
+      <Title>{t('about-title')}</Title>
+      <Markdown components={{ a: ({ children }) => <TagElement tagId={children[0] as string} type='link' /> }}>
+        {mdText}
+      </Markdown>
     </>
   )
-}
-
-function parseText(text: string, tags: string[]): JSX.Element[] {
-  return text.split('/n/').map((part, index) => {
-    if (part[0] === '#') {
-      return <Subtitle key={`title-${part.split('#')}`}>{part.split('#')}</Subtitle>
-    } else {
-      return (
-        <Paragraph key={`paragraph-${index}`}>
-          {part.split('/').map((piece, i) => {
-            if (tags.includes(piece)) {
-              return <TagElement type='link' tagName={piece} key={`tag-${piece}-${index}-${i}`} />
-            }
-            return piece
-          })}
-        </Paragraph>
-      )
-    }
-  })
 }
 
 const Title = styled.h1`
@@ -78,16 +44,6 @@ const Title = styled.h1`
   color: ${props => props.theme.text};
   font-family: Montserrat;
   margin-bottom: 20px;
-`
-const Subtitle = styled.h2`
-  font-size: 32px;
-  color: ${props => props.theme.text};
-`
-const Paragraph = styled.p`
-  color: ${props => props.theme.opacityText};
-  font-size: 16px;
-  line-height: 1.7em;
-  letter-spacing: 0.2px;
 `
 const Markdown = styled(ReactMarkdown)`
   color: ${props => props.theme.opacityText};

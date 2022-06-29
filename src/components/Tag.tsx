@@ -5,28 +5,28 @@ import { Tag } from '../apis/types'
 import { useQuery, useAppSelector } from '../hooks'
 
 interface Props {
-  tagName: string
+  tagId: string
   type: 'tag' | 'link'
 }
 
-export default function TagElement({ tagName, type, ...props }: Props): JSX.Element {
+export default function TagElement({ tagId, type, ...props }: Props): JSX.Element {
   const query = useQuery()
   const location = useLocation()
   const [target, setTarget] = React.useState<string>('')
   const availableTags = useAppSelector(state => state.data.tags)
 
-  // Get tag by name
+  // Get tag by id
   const [tag, setTag] = React.useState<Tag | null>(null)
-  React.useEffect(() => setTag(availableTags.find((tag: Tag) => tag.name === tagName) ?? null), [availableTags])
+  React.useEffect(() => setTag(availableTags.find((tag: Tag) => tag.id === tagId) ?? null), [availableTags])
 
   // Calculate new query params
   let tags = query.get('tags')?.split(' ') ?? []
   const initialTags = query.get('tags')?.split(' ') ?? []
 
-  if (initialTags.includes(tagName)) {
-    tags.splice(tags.indexOf(tagName), 1)
+  if (initialTags.includes(tagId)) {
+    tags.splice(tags.indexOf(tagId), 1)
   } else {
-    tags.push(tagName)
+    tags.push(tagId)
   }
 
   // Calculate target
@@ -52,14 +52,14 @@ export default function TagElement({ tagName, type, ...props }: Props): JSX.Elem
     to: target,
     color: tag?.color,
     initialtags: initialTags,
-    name: tagName,
+    name: tagId,
     props,
   }
 
   return type === 'tag' ? (
-    <TagType {...elementProps}>{tagName}</TagType>
+    <TagType {...elementProps}>{tag?.name}</TagType>
   ) : (
-    <LinkType {...elementProps}>{tagName}</LinkType>
+    <LinkType {...elementProps}>{tag?.name}</LinkType>
   )
 }
 
@@ -68,9 +68,10 @@ const TagType = styled(Link)<StyledElementProps>`
   background-color: ${props => props?.color ?? props.theme.background};
   display: inline;
   padding: 2px 10px;
-  margin: 6px 2px;
+  margin: 0px 2px;
   vertical-align: center;
   font-size: 14px;
+  display: inline-block;
   line-height: 16px;
   text-decoration: none;
   border-radius: 100px;

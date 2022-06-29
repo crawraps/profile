@@ -39,8 +39,8 @@ export function Item({ project }: ItemProps): JSX.Element {
       <ItemInfo>
         <ItemLabel>{lang === 'en' ? project.nameEN : project.nameRU}</ItemLabel>
         <ItemTags>
-          {project.tags.map(tagName => (
-            <TagElement type='tag' tagName={tagName} key={tagName} />
+          {project.tags.map(tagId => (
+            <TagElement type='tag' tagId={tagId} key={`project-list-tag-${tagId}`} />
           ))}
         </ItemTags>
         <ItemDescription>

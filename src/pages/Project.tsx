@@ -95,7 +95,7 @@ export default function Project(): JSX.Element {
             {t('project-tags')}:
           </TagsTitle>
           {project?.tags.map(tag => (
-            <TagElement tagName={tag} type='tag' key={`project-tag-${tag}`} />
+            <TagElement tagId={tag} type='tag' key={`project-tag-${tag}`} />
           ))}
         </TagContainer>
       </InfoContainer>

@@ -88,7 +88,7 @@ export async function fetchTags(dispatch: AppDispatch, getState: () => RootState
   await getDocs(collection(db, 'tags'))
     .then(res =>
       res.forEach(doc => {
-        const tag = { ...doc.data() } as Tag
+        const tag = { ...doc.data(), id: doc.id } as Tag
         tags.push(tag)
       })
     )

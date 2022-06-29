@@ -22,6 +22,7 @@ export type ProjectDescriptions = {
 }
 
 export type Tag = {
+  id: string
   name: string
   link: string
   color: string
