@@ -1,18 +1,17 @@
 import React from 'react'
-import { AppDispatch, RootState } from '../store/index'
 import { useLocation } from 'react-router-dom'
-import { useAppDispatch, useAppSelector, usePageInfo } from '../hooks'
+import { useAppSelector, usePageInfo } from '../hooks'
 import { Project as ProjectType } from '../apis/types'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components'
-import { addDescription } from '../apis/database'
 import Loader from '../components/Loader'
 import TagElement from '../components/Tag'
 import { useTranslation } from 'react-i18next'
+import TechnologyTag from '../components/TechnologyTag'
 import ClockIcon from '../assets/icons/Clock'
 import GithubIcon from '../assets/icons/Github'
 import TagsIcon from '../assets/icons/Tags'
-import TechnologyTag from '../components/TechnologyTag'
+import BookIcon from '../assets/icons/Book'
 
 export default function Project(): JSX.Element {
   // Get all projects
@@ -67,6 +66,12 @@ export default function Project(): JSX.Element {
     <>
       <Title>{(lang === 'ru' ? project?.nameRU : project?.nameEN) ?? 'Project'}</Title>
       <InfoContainer>
+        <LinksContainer>
+          <Link>
+            <GithubIcon size={20} />
+            {project?.links.git.slice(19)}
+          </Link>
+        </LinksContainer>
         <DateTimeContainer>
           <DateTime>
             <ClockIcon size={20} />
@@ -87,12 +92,6 @@ export default function Project(): JSX.Element {
             {`${t('project-pushed')}: ${project?.pushed?.toString().split(' ').splice(0, 4).join(' ') ?? 'Loading...'}`}
           </DateTime>
         </DateTimeContainer>
-        <LinksContainer>
-          <Link>
-            <GithubIcon size={20} />
-            {project?.links.git.slice(19)}
-          </Link>
-        </LinksContainer>
         <TagContainer>
           <TagsIcon size={20} />
           <TagsTitle>{t('project-tags')}:</TagsTitle>
@@ -101,7 +100,7 @@ export default function Project(): JSX.Element {
           ))}
         </TagContainer>
         <TagContainer>
-          <TagsIcon size={20} />
+          <BookIcon size={20} />
           <TagsTitle>{t('project-technologies')}:</TagsTitle>
           {project?.technologies.map(tag => (
             <TechnologyTag tagId={tag} key={`project-technology-${tag}`} />
