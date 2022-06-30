@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next'
 import ClockIcon from '../assets/icons/Clock'
 import GithubIcon from '../assets/icons/Github'
 import TagsIcon from '../assets/icons/Tags'
+import TechnologyTag from '../components/TechnologyTag'
 
 export default function Project(): JSX.Element {
   // Get all projects
@@ -97,6 +98,13 @@ export default function Project(): JSX.Element {
           <TagsTitle>{t('project-tags')}:</TagsTitle>
           {project?.tags.map(tag => (
             <TagElement tagId={tag} type='tag' key={`project-tag-${tag}`} />
+          ))}
+        </TagContainer>
+        <TagContainer>
+          <TagsIcon size={20} />
+          <TagsTitle>{t('project-technologies')}:</TagsTitle>
+          {project?.technologies.map(tag => (
+            <TechnologyTag tagId={tag} key={`project-technology-${tag}`} />
           ))}
         </TagContainer>
       </InfoContainer>

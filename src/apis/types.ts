@@ -12,6 +12,7 @@ export type Project = {
   created?: Date
   pushed?: Date
   descriptions: ProjectDescriptions
+  technologies: string[]
 }
 
 export type ProjectDescriptions = {
