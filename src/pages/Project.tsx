@@ -31,12 +31,6 @@ export default function Project(): JSX.Element {
     return projects.find(pr => pr.id === id) ?? null
   }, [location, projects])
 
-  // Parse and add description to storage
-  // const dispatch = useAppDispatch()
-  // React.useMemo(() => {
-  //   dispatch((dispatch: AppDispatch, getState: () => RootState) => addDescription(dispatch, getState, project))
-  // }, [lang])
-
   // Set page title
   const setPageInfo = usePageInfo()
   React.useEffect(() => {
@@ -93,18 +87,26 @@ export default function Project(): JSX.Element {
           </DateTime>
         </DateTimeContainer>
         <TagContainer>
-          <TagsIcon size={20} />
-          <TagsTitle>{t('project-tags')}:</TagsTitle>
-          {project?.tags.map(tag => (
-            <TagElement tagId={tag} type='tag' key={`project-tag-${tag}`} />
-          ))}
+          <TagsTitle>
+            <TagsIcon size={20} />
+            {t('project-tags')}:
+          </TagsTitle>
+          <TagsContainer>
+            {project?.tags.map(tag => (
+              <TagElement tagId={tag} type='tag' key={`project-tag-${tag}`} />
+            ))}
+          </TagsContainer>
         </TagContainer>
         <TagContainer>
-          <BookIcon size={20} />
-          <TagsTitle>{t('project-technologies')}:</TagsTitle>
-          {project?.technologies.map(tag => (
-            <TechnologyTag tagId={tag} key={`project-technology-${tag}`} />
-          ))}
+          <TagsTitle>
+            <BookIcon size={20} />
+            {t('project-technologies')}:
+          </TagsTitle>
+          <TagsContainer>
+            {project?.technologies.map(tag => (
+              <TechnologyTag tagId={tag} key={`project-technology-${tag}`} />
+            ))}
+          </TagsContainer>
         </TagContainer>
       </InfoContainer>
       {Content}
@@ -151,7 +153,16 @@ const TagContainer = styled.div`
   flex-direction: row;
   font-size: 16px;
   color: gray;
-  align-items: center;
+  align-items: flex-start;
+`
+const TagsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+
+  a,
+  span {
+    margin: 2px 2px;
+  }
 `
 const DateTimeContainer = styled.div`
   display: flex;
@@ -176,6 +187,8 @@ const TagsTitle = styled.span`
   color: gray;
   margin-right: 0.6em;
   margin-bottom: 4px;
+  display: flex;
+  align-items: center;
 `
 const Icon = styled.span`
   margin-right: 0.6em;
