@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
@@ -9,7 +10,7 @@ interface Props {
   type: 'tag' | 'link'
 }
 
-export default function TagElement({ tagId, type, ...props }: Props): JSX.Element {
+function TagElement({ tagId, type, ...props }: Props): JSX.Element {
   const query = useQuery()
   const location = useLocation()
   const [target, setTarget] = React.useState<string>('')
@@ -46,7 +47,7 @@ export default function TagElement({ tagId, type, ...props }: Props): JSX.Elemen
 
     return target
   }, [location])
-  React.useEffect(() => setTarget(getTarget()), [getTarget])
+  React.useMemo(() => setTarget(getTarget()), [getTarget])
 
   const elementProps = {
     to: target,
@@ -62,6 +63,8 @@ export default function TagElement({ tagId, type, ...props }: Props): JSX.Elemen
     <LinkType {...elementProps}>{tag?.name}</LinkType>
   )
 }
+
+export default React.memo(TagElement)
 
 const TagType = styled(Link)<StyledElementProps>`
   color: ${props => props.theme.main};
