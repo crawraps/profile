@@ -2,7 +2,7 @@ export type Project = {
   id: string
   nameEN: string
   nameRU: string
-  mainImage: string
+  mainImage: ProjectImage
   links: {
     [key: string]: string
   }
@@ -21,6 +21,13 @@ export type ProjectDescriptions = {
   shortEng?: string
   shortRu?: string
 }
+
+export type ProjectImage =
+  | {
+      light: string
+      dark: string
+    }
+  | string
 
 export type Tag = {
   id: string

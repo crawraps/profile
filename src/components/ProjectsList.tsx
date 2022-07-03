@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Project } from '../apis/types'
 import ClockIcon from '../assets/icons/Clock'
 import { useAppSelector } from '../hooks'
+import SmoothImage from './SmoothImage'
 import SortButton from './SortButton'
 import TagElement from './Tag'
 
@@ -36,7 +37,7 @@ export function Item({ project }: ItemProps): JSX.Element {
 
   return (
     <ItemLink to={`project/${project.id}`}>
-      <ItemImage src={project.mainImage} height={350} loading='lazy' />
+      <SmoothImage src={project.mainImage} height={350} />
       <ItemInfo>
         <ItemLabelContainer>
           <ItemLabel>{lang === 'en' ? project.nameEN : project.nameRU}</ItemLabel>
@@ -59,9 +60,6 @@ export function Item({ project }: ItemProps): JSX.Element {
 }
 
 // Styled components
-const Icon = styled.span`
-  margin-right: 0.4em;
-`
 const ItemLabelContainer = styled.div`
   display: flex;
   align-items: center;

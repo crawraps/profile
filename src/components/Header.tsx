@@ -1,14 +1,15 @@
 import { AnimatePresence, motion, Transition, Variants } from 'framer-motion'
 import React from 'react'
+import { ProjectImage } from '../apis/types'
+import { useAppSelector } from '../hooks'
 import PatternBackground from './PatternBackround'
 
 export interface HeaderProps {
   page: 'project' | 'home' | 'about'
   firstColor: string
   secondColor: string
-  src: string
+  src: ProjectImage
   alt: string
-  [key: string]: string
 }
 
 const Header = React.memo(function Header({
@@ -19,12 +20,10 @@ const Header = React.memo(function Header({
   alt,
   ...props
 }: HeaderProps): JSX.Element {
-  page === 'project' ? (
-    <img src={src} alt={alt} {...props} />
-  ) : (
-    <PatternBackground firstColor={firstColor} secondColor={secondColor} {...props} />
-  )
+  // Get theme
+  const theme: 'light' | 'dark' = useAppSelector(state => state.settings.theme)
 
+  // Create animation variant
   const variants: Variants = {
     hidden: {
       opacity: 0,
@@ -46,7 +45,7 @@ const Header = React.memo(function Header({
     <AnimatePresence>
       {page === 'project' ? (
         <motion.img
-          src={src}
+          src={typeof src === 'object' ? src[theme] : src}
           alt={alt}
           animate='visible'
           exit='hidden'
