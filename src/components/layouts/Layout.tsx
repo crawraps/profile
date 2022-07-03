@@ -59,11 +59,7 @@ export default function Layout(): JSX.Element {
     <MainContainer>
       <Helmet>
         <title>{`${pageInfo?.name} | Crawraps`}</title>
-        <link
-          rel='shortcut icon'
-          type='image/x-icon'
-          href={require(`./../../assets/images/logo-${state.settings.theme}.png`)}
-        />
+        <link rel='shortcut icon' type='image/x-icon' href={require(`./../../assets/images/logo-dark.png`)} />
       </Helmet>
 
       <StylizedHeader
