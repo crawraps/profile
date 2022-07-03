@@ -37,7 +37,7 @@ export function Item({ project }: ItemProps): JSX.Element {
 
   return (
     <ItemLink to={`project/${project.id}`}>
-      <SmoothImage src={project.mainImage} height={350} />
+      <SmoothImage src={project.mainImage} height='350px' />
       <ItemInfo>
         <ItemLabelContainer>
           <ItemLabel>{lang === 'en' ? project.nameEN : project.nameRU}</ItemLabel>
