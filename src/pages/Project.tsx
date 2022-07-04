@@ -122,7 +122,7 @@ const InfoContainer = styled.div`
   fill: gray;
 
   & > div {
-    margin: 2px 0;
+    margin: 4px 0;
   }
 `
 const LinksContainer = styled.div`
@@ -154,6 +154,7 @@ const TagContainer = styled.div`
   font-size: 16px;
   color: gray;
   align-items: flex-start;
+  margin: 2px 0 0 0 !important;
 `
 const TagsContainer = styled.div`
   display: flex;
@@ -161,7 +162,7 @@ const TagsContainer = styled.div`
 
   a,
   span {
-    margin: 2px 2px;
+    margin: 0px 2px;
   }
 `
 const DateTimeContainer = styled.div`
