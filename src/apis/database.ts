@@ -1,10 +1,17 @@
 import { AppDispatch, RootState } from '../store/index'
-import { getFirestore, getDocs, collection, getDoc, doc } from 'firebase/firestore'
+import { getFirestore, getDocs, collection, doc, getDoc } from 'firebase/firestore'
 import app from '.'
-import { Project, Tag } from './types'
-import { fetchDescription, fetchRepo } from './git'
+import { Project, ProjectDescriptions, Tag } from './types'
+import { getGitFetchingFunctions } from './git'
 import _ from 'lodash'
+
 const db = getFirestore(app)
+let fetchRepo: (gitUrl: string) => Promise<void | { created: Date; updated: Date; pushed: Date; contents: any }>
+let fetchDescription: (gitUrl: string, name: keyof ProjectDescriptions) => Promise<string | void>
+getGitFetchingFunctions().then(res => {
+  fetchRepo = res.fetchRepo
+  fetchDescription = res.fetchDescription
+})
 
 export async function fetchProjects(dispatch: AppDispatch, getState: () => RootState) {
   let projects: Project[] = []
@@ -99,5 +106,16 @@ export async function fetchTags(dispatch: AppDispatch, getState: () => RootState
   // Set data loaded if projects and tags are loaded
   if (getState().data.projects.length !== 0) {
     dispatch({ type: 'setLoaded', value: true })
+  }
+}
+
+export async function fetchGitToken() {
+  const docRef = doc(db, 'internal-data', 'github-access-token')
+  const docSnap = await getDoc(docRef)
+
+  if (docSnap.exists()) {
+    return docSnap.data().token as string
+  } else {
+    return 'Error while fetching token'
   }
 }
