@@ -97,17 +97,19 @@ export default function Project(): JSX.Element {
             ))}
           </TagsContainer>
         </TagContainer>
-        <TagContainer>
-          <TagsTitle>
-            <BookIcon size={20} />
-            {t('project-technologies')}:
-          </TagsTitle>
-          <TagsContainer>
-            {project?.technologies.map(tag => (
-              <TechnologyTag tagId={tag} key={`project-technology-${tag}`} />
-            ))}
-          </TagsContainer>
-        </TagContainer>
+        {project?.technologies ? (
+          <TagContainer>
+            <TagsTitle>
+              <BookIcon size={20} />
+              {t('project-technologies')}:
+            </TagsTitle>
+            <TagsContainer>
+              {project?.technologies.map(tag => (
+                <TechnologyTag tagId={tag} key={`project-technology-${tag}`} />
+              ))}
+            </TagsContainer>
+          </TagContainer>
+        ) : null}
       </InfoContainer>
       {Content}
     </>
