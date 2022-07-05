@@ -44,9 +44,17 @@ export default function Project(): JSX.Element {
   // Calculate content
   React.useEffect(() => {
     if (lang === 'en' && project?.descriptions.fullEng) {
-      setContent(<Markdown>{project?.descriptions.fullEng ?? ''}</Markdown>)
+      setContent(
+        <Markdown components={{ a: ({ children }) => <TagElement tagId={children[0] as string} type='link' /> }}>
+          {project?.descriptions.fullEng ?? ''}
+        </Markdown>
+      )
     } else if (lang === 'ru' && project?.descriptions.fullRu) {
-      setContent(<Markdown>{project?.descriptions.fullRu ?? ''}</Markdown>)
+      setContent(
+        <Markdown components={{ a: ({ children }) => <TagElement tagId={children[0] as string} type='link' /> }}>
+          {project?.descriptions.fullRu ?? ''}
+        </Markdown>
+      )
     } else {
       setContent(
         <LoaderContainer>
