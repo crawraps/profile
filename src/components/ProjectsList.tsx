@@ -64,6 +64,12 @@ const ItemLabelContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media screen and (max-width: 767px) {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
 `
 const DateTime = styled.span`
   display: flex;
@@ -71,6 +77,10 @@ const DateTime = styled.span`
   color: gray;
   font-size: 16px;
   align-items: center;
+
+  @media screen and (max-width: 767px) {
+    margin: 0.4em 0;
+  }
 `
 const Container = styled.div`
   display: flex;
@@ -111,12 +121,6 @@ const ItemLink = styled(Link)`
     background-color: ${props => props.theme.elevation[1].color};
   }
 `
-const ItemImage = styled.img`
-  width: 100%;
-  height: ${props => props.height}px;
-  object-fit: cover;
-  object-position: center center;
-`
 const ItemInfo = styled.div`
   display: flex;
   flex-direction: column;
@@ -137,6 +141,10 @@ const ItemLabel = styled.h2`
   &::first-letter {
     text-transform: uppercase;
   }
+
+  @media screen and (max-width: 767px) {
+    margin-bottom: 0px;
+  }
 `
 const ItemDescription = styled.p`
   font-size: 16px;
@@ -147,7 +155,6 @@ const ItemDescription = styled.p`
   transition: all 0.1s ease-in;
   margin-bottom: 10px;
   position: relative;
-  max-height: 100px;
   overflow: hidden;
 `
 const ItemTags = styled.div`

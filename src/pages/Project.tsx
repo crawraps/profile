@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import { useAppSelector, usePageInfo } from '../hooks'
-import { Project as ProjectType } from '../apis/types'
+import { Project as ProjectType, Tag } from '../apis/types'
 import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components'
 import Loader from '../components/Loader'
@@ -44,17 +44,9 @@ export default function Project(): JSX.Element {
   // Calculate content
   React.useEffect(() => {
     if (lang === 'en' && project?.descriptions.fullEng) {
-      setContent(
-        <Markdown components={{ a: ({ children }) => <TagElement tagId={children[0] as string} type='link' /> }}>
-          {project?.descriptions.fullEng ?? ''}
-        </Markdown>
-      )
+      setContent(<FormatText>{project?.descriptions.fullEng ?? ''}</FormatText>)
     } else if (lang === 'ru' && project?.descriptions.fullRu) {
-      setContent(
-        <Markdown components={{ a: ({ children }) => <TagElement tagId={children[0] as string} type='link' /> }}>
-          {project?.descriptions.fullRu ?? ''}
-        </Markdown>
-      )
+      setContent(<FormatText>{project?.descriptions.fullRu ?? ''}</FormatText>)
     } else {
       setContent(
         <LoaderContainer>
@@ -69,7 +61,7 @@ export default function Project(): JSX.Element {
       <Title>{(lang === 'ru' ? project?.nameRU : project?.nameEN) ?? 'Project'}</Title>
       <InfoContainer>
         <LinksContainer>
-          <Link>
+          <Link href={project?.links.git} target='_blank'>
             <GithubIcon size={20} />
             {project?.links.git.slice(19)}
           </Link>
@@ -124,6 +116,36 @@ export default function Project(): JSX.Element {
   )
 }
 
+// Format text content
+const FormatText = React.memo(({ children }: { children: string }) => {
+  const tags: Tag[] = useAppSelector(state => state.data.tags)
+
+  return (
+    <Markdown
+      components={{
+        a: ({ children, ...props }) => {
+          if (tags.map(tag => tag.id).includes(children[0] as string)) {
+            return <TagElement tagId={children[0] as string} type='link' />
+          }
+
+          return <TextLink {...props}>{children}</TextLink>
+        },
+      }}
+    >
+      {children}
+    </Markdown>
+  )
+})
+
+const TextLink = styled.a`
+  color: ${props => props.theme.link};
+  text-decoration: none;
+  transition: 0.2s ease-in;
+
+  &:hover {
+    color: ${props => props.theme.primary};
+  }
+`
 const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -172,7 +194,7 @@ const TagsContainer = styled.div`
 
   a,
   span {
-    margin: 0px 2px;
+    margin: 2px 2px;
   }
 `
 const DateTimeContainer = styled.div`
