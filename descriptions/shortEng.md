@@ -1,1 +1,1 @@
-This is short description of my profile project. Lorem ipsum dolar sit amet and so on. I think the most difficult thing in creating my projects will be creation of the descriptions and the most difficult thing in this project will be filling with content.
+Thanks to this project, I can present all my works in one place. I decided to make my portfolio so that it would be easier for employers and all people to find out about me, my projects and my hobbies.
